@@ -1,0 +1,212 @@
+*{
+    text-decoration: none;
+    box-sizing: border-box;
+}
+body{
+    font-size: 14px;
+    font-family: 'Open Sans';
+    background-color: #F5F5F5;
+    color: #000000;
+}
+.mainHeader{
+    display: flex;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #d2d3c9;
+}
+.mainHeader a{
+    padding: 1em;
+    border-left: 1px solid #d2d3c9;
+    color: #000000;
+}
+.mainHeader .main{
+    flex:1;
+}
+.mainHeader .main p{
+    font-weight: 900;
+    color:#790c5a;
+    font-size: 1em;
+}
+.Survey{
+    width:100%;
+    border: 1px solid #d2d3c9;
+    margin:2px;
+    height:100%;
+    background: #FFFFFF;
+    font-family: 'Open Sans';
+    
+}
+.survey-header{
+    padding-right: 0.5em;
+}
+.survey-header p{
+    color: #0072C6;
+    font-family: 'Open Sans';
+    font-weight: 600;
+    font-size: 12px;
+    padding: 0;
+    align-items: center;
+    margin:5px 5px;
+}
+.survey-subheader{
+    display: flex;
+    background-color: #F5F5F5;
+    height:47px;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.12);
+}
+.survey-subheader .survey-sub{
+    flex:1;
+}
+.survey-subheader  p{
+    margin-right:1.5em;
+    margin-left:1.5em;
+    color: #313A43;
+    padding:1em 0;
+}
+.surveyBodyHeader{
+    display: flex;
+    box-shadow:0 3px 6px 0 rgba(0,0,0,0.12);
+    height: 47px;
+    align-items: center;
+}
+
+.surveyBodyHeader .links{
+    color: #000000;
+    margin-left: 1.2em;
+}
+.surveyBodyHeader .links:hover{
+    color: #0072C6;
+    padding-bottom: 0.9em;
+    border-bottom: 2px solid #0072C6;
+    margin-top: 1.1em;
+}
+.surveyDefinition{
+    display: flex;
+    flex-direction: column;
+    margin-top:1em;
+}
+.surveydef-div{
+    display: flex;
+}
+
+.surveydef-div > :first-child{
+    flex:1;
+    text-align: end;
+    align-self: center;
+}
+.surveydef-div >:nth-child(2){
+    flex:1;
+    margin:1em;
+    margin-right:50%;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid #D4D4D4;
+    height:32px;
+    border-radius: 2px;
+}
+.surveydef-div .switch{
+    border:none;
+    width:3em;
+    align-self: center;
+}
+.surveydef-div .logo{
+    border:none;
+    color:red;
+}
+.surveydef-div .duration{
+    width:100%;
+}
+.span{
+    color:#D91C29;
+}
+.showQues-ant{
+    position: relative;
+    left:16%;
+    width:50%;
+}
+.showProgress-ant{
+    position: relative;
+    left:17.6%;
+    width:50%;
+}
+.displayFormat-ant{
+    position: relative;
+    left:16%;
+    width:50%;
+}
+.displayFormat-ant .choose{
+    height:8em;
+    width:10em;
+    margin: 0 0.7em;
+}
+/*  WelcomeMessage */
+.welcomeMessage{
+    border: 1px solid #E9E9E9;
+    margin: 8px;
+}
+.welcomeMessage .heading{
+    background-color: #F5F5F5;
+    border: 1px solid #E9E9E9; 
+}
+.welcomeMessage .message button{
+    border: 2px solid #E9E9E9;
+}
+.welcomeMessage p{
+    border: 1px solid grey;
+    padding:5px;
+}
+.welcomeMessage .message{
+    border: 0.5px solid rgb(184, 175, 175);
+    padding:16px;
+}
+.welcomeMessage .message .text{
+    margin: 1em 0 2em;
+}
+.welcomeMessage .title{
+    margin:1em;
+}
+.welcomeMessage p::before{
+    content:'>';
+}
+/* .welcomeMessage p::after{
+    content:'>';
+} */
+
+/* THANKYOU HEADING */
+.thankYou{
+    margin:8px;
+    background-color: #F5F5F5;
+    
+}
+.thankYou .heading{
+    padding:5px;
+    border: 2px solid #E9E9E9;
+}
+.thankYou .heading::before{
+    content:'>';
+}
+
+/* PAGE TITLE */
+.pageTitle{
+    background-color: #F5F5F5;
+    display:flex;
+    border: 1px solid #E9E9E9;
+    margin:8px;
+}
+.pageTitle .heading{
+    flex:1;
+    margin:0.5em;
+} 
+.pageTitle .input{
+    padding-left:1em;
+    color:black;
+} 
+.pageTitle a, .pageTitle p {
+    text-decoration: none;
+    color:black;
+    margin:0.5em;
+}
+.addPage{
+    position: relative;
+    left: 50%;
+    margin:5px;
+}
