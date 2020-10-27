@@ -1,4 +1,4 @@
-
+/* 
 .sidebar{
     background-color:white;
     line-height: 3em;
@@ -40,7 +40,7 @@
   label #btn, label #cancel{
     position: absolute;
     cursor: pointer;
-    background: #white;
+    background: white;
     border-radius: 3px;
     z-index: 10;
   }
@@ -76,4 +76,4 @@
   #check:checked ~ section{
     margin-left:25%;
     transition: all .8s ease;
-  }
+  } */

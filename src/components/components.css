@@ -41,17 +41,25 @@ body{
 .survey-header p{
     color: #0072C6;
     font-family: 'Open Sans';
-    font-weight: 600;
+    font-weight: 900;
     font-size: 12px;
     padding: 0;
     align-items: center;
     margin:5px 5px;
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left:1em;
 }
+.survey-header p > :first-child{
+    font-weight:900;
+} 
 .survey-subheader{
     display: flex;
     background-color: #F5F5F5;
     height:47px;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.12);
+    
+    
 }
 .survey-subheader .survey-sub{
     flex:1;
@@ -61,17 +69,37 @@ body{
     margin-left:1.5em;
     color: #313A43;
     padding:1em 0;
+    display: inline-flex;
+    vertical-align: middle;
+    color: #3A3A3A;
+}
+.main-surveyBodyHeader{
+    display:flex;
+    box-shadow:0 3px 6px 0 rgba(0,0,0,0.12);
 }
 .surveyBodyHeader{
     display: flex;
-    box-shadow:0 3px 6px 0 rgba(0,0,0,0.12);
+    
     height: 47px;
     align-items: center;
+    flex:1;
 }
-
+main-surveyBodyHeader .options {
+    margin-top: 10px;
+    margin-right:2em;
+}
+.main-surveyBodyHeader .options button{
+    margin: 10px 10px;
+    color:#0072C6;
+    border: 1px solid #0072C6;
+    border-radius: 2px;
+    background-color: white;
+    font-weight: 900;
+    margin-right:1em;
+}
 .surveyBodyHeader .links{
     color: #000000;
-    margin-left: 1.2em;
+    margin-left: 2em;
 }
 .surveyBodyHeader .links:hover{
     color: #0072C6;
@@ -142,71 +170,197 @@ body{
 .welcomeMessage{
     border: 1px solid #E9E9E9;
     margin: 8px;
+    border-radius: 2px;
+}
+.welcomeMessage .heading-div{
+    background-color: #F5F5F5;
+    border: 1px solid #E9E9E9;
+    border-radius: 2px;
+    height:43px;
 }
 .welcomeMessage .heading{
     background-color: #F5F5F5;
-    border: 1px solid #E9E9E9; 
+    font-weight: 600;
+}
+.welcomeMessage .title{
+    padding-left:1.2em;
 }
 .welcomeMessage .message button{
-    border: 2px solid #E9E9E9;
+    
+    
+}
+.message .buttons{
+    background-color: #F5F5F5;
+    margin:0;
+    padding:10px;
+    border-radius: 2px;
+}
+.message .buttons button{
+    background: #FFFFFF;
+    border: 1px solid #D8DDE6;
+    border-radius: 2px;
+    color:#54698D;
+    font-weight: 900;
+    height:24px;
+    width:24px;
+    padding: 1.5px 1.5px;
 }
 .welcomeMessage p{
-    border: 1px solid grey;
-    padding:5px;
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    margin-top: 10px;
 }
 .welcomeMessage .message{
     border: 0.5px solid rgb(184, 175, 175);
     padding:16px;
+    padding-top: 0px;
+    padding-left: 0px;
+    border-radius: 2px;
+    border: 1px solid #B4B4B4;
+}
+.title p{
+    margin:0;
+    
 }
 .welcomeMessage .message .text{
-    margin: 1em 0 2em;
+    margin: 1em 1em 2em;
 }
 .welcomeMessage .title{
     margin:1em;
+    
 }
+
 .welcomeMessage p::before{
-    content:'>';
+    content:'';
 }
 /* .welcomeMessage p::after{
     content:'>';
 } */
 
-/* THANKYOU HEADING */
-.thankYou{
-    margin:8px;
-    background-color: #F5F5F5;
-    
-}
-.thankYou .heading{
-    padding:5px;
-    border: 2px solid #E9E9E9;
-}
-.thankYou .heading::before{
-    content:'>';
-}
 
 /* PAGE TITLE */
+.page{
+    border: 1px solid #E9E9E9;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.10);
+    margin:0.7em;
+}
 .pageTitle{
     background-color: #F5F5F5;
     display:flex;
     border: 1px solid #E9E9E9;
-    margin:8px;
+    
+    text-align: center;
 }
 .pageTitle .heading{
     flex:1;
     margin:0.5em;
+    display: inline-flex;
+    vertical-align: middle;
+    font-size: 14px;
+    margin-left: 0;
 } 
 .pageTitle .input{
     padding-left:1em;
     color:black;
+    border: 1px solid #B4B4B4;
+    border-radius: 2px;
+    background: #F5F5F5;
 } 
+.pageTitle > :nth-child(2){
+    font-size: 12px;
+    color: #393939;
+    font-weight: 600;
+    margin-top: 2em;
+}
 .pageTitle a, .pageTitle p {
     text-decoration: none;
     color:black;
-    margin:0.5em;
+    margin-right: 4em;
+    margin-top: 1em;
+    display: inline-flex;   
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+.pageTitle .blue-section a{
+    color:#0072C6;
+    font-weight: 600;
+}
+.checkbox-label p{
+    color:#0072C6;
+    font-weight: 600;
+    margin-top: 2em;
+}
+.checkbox-label p:hover{
+    cursor:pointer;
+}
+.rendered{
+    display: flex;
+}
+.rendered-data{
+    display:flex;
+    flex:1; 
+}
+.rendered-data p{
+    background: #FFFFFF;
+    border: 1px solid #C9C9C9;
+    border-radius: 2px;
+    height:2.5em;
+    width:10em;
+    margin-left:1em;
+    text-align: left;
+    padding:.5em;
+}
+.rendered-data .p1{
+    flex:3;
+}
+.rendered-data .p2{
+    flex:1;
+}
+.rendered-buttons button{
+    margin-right: 1em;
+    border:none;
+    background-color: white;
+    color:#697A8B;
+}
+.noQuesMessage{
+text-align: center;
+font-size: 12px;
+color: #646464;
 }
 .addPage{
     position: relative;
     left: 50%;
     margin:5px;
+    border: 1px solid #0072C6;
+    border-radius: 2px;
+    color:#0072C6;  
+    font-weight: 600;
+    background: white;
+}
+/* THANKYOU HEADING */
+.thankYou{
+    margin:8px;
+    background-color: #F5F5F5;
+    border: 2px solid #E9E9E9;
+    padding-top: .5em;
+    height:3.5em;
+    font-weight: 600;
+    color: #393939;
+}
+.thankYou .heading{
+    padding:5px;
+    align-items: center;
+    display: inline-flex;
+    vertical-align: middle;
+    margin-top: -0.5em;
+}
+.thankYou .heading::before{
+    content:'';
+}
+.thankYouMessage{
+    text-align: center;
+    font-size: 12px;
+    color: #646464;
 }

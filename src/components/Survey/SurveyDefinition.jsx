@@ -92,7 +92,6 @@ const BlueSwitch = withStyles((theme) => ({
   function SurveyDefinition(props){
     console.log({props});
     const classes = useStyles();
-          
     
     // const globalData=useSelector(state => state.SurveyInfo);
     // const dispatch=useDispatch();

@@ -1,0 +1,74 @@
+.question-popup{
+    position: absolute;
+    top:0em;
+    right:0em;
+    height:100vh;
+    width:35vw;
+    z-index: 1;
+    padding:2em;
+    background: #FFFFFF;
+    box-shadow: 0 3px 6px 0;
+    font-size: 12px;
+    font-weight: 600;
+}
+.question-popup .ques-heading{
+    font-size: 14px;
+    text-align: center;
+}
+
+ #cancel-icon{
+     position: absolute;
+     top:1.3em;
+     right:30em;
+     font-size:1.5em;
+     z-index: 2;
+     cursor:pointer;
+
+ }
+#check{
+    display: none;
+}
+#answer-type{
+    background: #FFFFFF;
+    border: 1px solid #D4D4D4;
+    border-radius: 2px;
+    font-weight: 100;
+}
+#mandatory{
+    border: 1px solid #C4C4C4;
+    border-radius: 2px;
+}
+
+
+.question-input{
+    position: relative;
+    width:98%;
+    height:6em;
+    text-align: start;
+    align-self: start;
+    background: #FFFFFF;
+    border: 1px solid #D4D4D4;
+    border-radius: 2px;
+}
+.sc-buttons{
+    position: absolute;
+    bottom:3em;
+    right:3em;
+}
+.sc-buttons button{
+    margin: 1em;
+    padding:0.5em;
+    height:3em;
+    width:5em;
+    font-weight: 600;
+}
+.sc-buttons .cancel-button{
+    border: 1px solid #979797;
+    border-radius: 2px;
+    color:black;
+}
+.sc-buttons .save-button{
+    background: #0072C6;
+    border:none;
+    color: #FFFFFF;
+}

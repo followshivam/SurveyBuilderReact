@@ -5,9 +5,11 @@ import ThankYou from "./ThankYou";
 import EditQuestion from "./EditQuestion";
 
 function CreateQuestions() {
+    
+    
     return (
         <div>
-            <EditQuestion/>
+            {/* <EditQuestion/> */}
             <WelcomeMessage/>
             <PageTitle/>
             <ThankYou/>
