@@ -58,9 +58,8 @@ body{
     background-color: #F5F5F5;
     height:47px;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.12);
-    
-    
 }
+
 .survey-subheader .survey-sub{
     flex:1;
 }
@@ -72,6 +71,10 @@ body{
     display: inline-flex;
     vertical-align: middle;
     color: #3A3A3A;
+}
+.saveDef-button:hover{
+    color: #0072C6;
+    cursor: pointer;
 }
 .main-surveyBodyHeader{
     display:flex;
@@ -184,10 +187,6 @@ main-surveyBodyHeader .options {
 }
 .welcomeMessage .title{
     padding-left:1.2em;
-}
-.welcomeMessage .message button{
-    
-    
 }
 .message .buttons{
     background-color: #F5F5F5;

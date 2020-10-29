@@ -23,6 +23,7 @@ function EditQuestion2(props) {
             ...prev, [name]:value, id:quesNo
             }})
     }
+    
     function handleSave(event){
         event.preventDefault();
         setQuestions([
@@ -40,7 +41,7 @@ function EditQuestion2(props) {
         id:"",
         type:""
         });
-        setQuesNo(quesNo+1);
+        setQuesNo((quesNo+1));
         props.actionSave();
         props.getData(quesData);
     }
