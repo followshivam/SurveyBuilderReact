@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import '../components.css';
+import '../../components.css';
 // import {useSelector, useDispatch} from "react-redux";
-import {addInfo} from "../../Actions/Listen";
+import {addInfo} from "../../../Actions/Listen";
 import {connect} from "react-redux";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Select from '@material-ui/core/Select';

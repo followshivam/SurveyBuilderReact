@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import ProjectTree from "./components/ProjectTree";
-import ProcessTree from "./components/ProcessTree";
+// import ProjectTree from "./components/ProjectTree";
+// import ProcessTree from "./components/ProcessTree";
 import Survey from "./components/Survey/Survey";
-import MainHeader from "./components/MainHeader";
+// import MainHeader from "./components/MainHeader";
 
 function App() {
   return (

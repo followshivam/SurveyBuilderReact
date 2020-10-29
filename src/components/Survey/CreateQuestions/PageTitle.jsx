@@ -3,10 +3,9 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import EditQuestion from "./EditQuestion";
 import EditQuestion2 from "./EditQuestion2";
 import "./EditQuestion2.css";
-import firebaseDb from "../../firebase";
+import firebaseDb from "../../../firebase";
 
 function PageTitle() {
 

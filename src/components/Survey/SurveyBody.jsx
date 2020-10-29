@@ -1,9 +1,9 @@
 import React from 'react';
 import SurveyBodyHeader from "./SurveyBodyHeader";
-import SurveyDefinition from "./SurveyDefinition";
-import CreateQuestions from "./CreateQuestions";
-import Publish from "./Publish";
-import Results from "./Results";
+import SurveyDefinition from "./SurveyDefinition/SurveyDefinition";
+import CreateQuestions from "./CreateQuestions/CreateQuestions";
+import Publish from "./Publish/Publish";
+import Results from "./Results/Results";
 import {Route, BrowserRouter as Router, Switch, Link} from "react-router-dom";
 import '../components.css';
 
