@@ -1,33 +1,23 @@
-import { persistReducer  } from "redux-persist";
-import storage from "redux-persist/lib/storage"; //local storage of browser
-
-
 const iState={
-    title:"adas",
-    description:"asds",
+    title:"",
+    description:"",
     project:"",
-    duration:{start:"", end:""},
-    showProgress:false,
-    showQuestions:false
+    duration:{start:"01/11/2020", end:"01/12/2020"},
+    logo:"",
+    display:"",
+    showProgress:"",
+    showQuestions:""
 }
 
-const persistConfig={
-    key:"root",
-    storage,
-    whitelist:["SurveyInfo"]
-}
-
-function SurveyInfo(state={iState}, action){
+function surveyInfo(state=iState, action){
     switch(action.type){
         case "ADDINFO":
            return {
                ...state ,[action.payload.name]:action.payload.value
-            // title:action.payload.title,
-            // description:action.payload.description
         };
         default:
             return state;
     }
 }
 
-export default persistReducer(persistConfig, SurveyInfo);
+export default surveyInfo;

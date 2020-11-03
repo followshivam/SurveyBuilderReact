@@ -6,8 +6,19 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import EditQuestion2 from "./EditQuestion2";
 import "./EditQuestion2.css";
 import firebaseDb from "../../../firebase";
+import Deleteg from "../../../iconComponents/Deleteg.tsx";
+import Duplicate from "../../../iconComponents/Duplicate.tsx";
+import Edit from "../../../iconComponents/Edit.tsx";
+import QuestionBranching from "../../../iconComponents/QuestionBranching.tsx";
+import QuestionBranchingHeader from "../../../iconComponents/QuestionBranchingHeader.tsx";
+import Save from "../../../iconComponents/Save.tsx";
+import Settings from "../../../iconComponents/Settings.tsx";
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 
 function PageTitle() {
+
+    const { t } = useTranslation();
 
     const [main, setMain]=useState([]);
     const [mainfetch, setMainfetch]=useState({});
@@ -57,37 +68,36 @@ function PageTitle() {
     console.log({main});
     console.log({mainfetch});
     
-
     return (
         <div className="page"  >
         <div className="pageTitle">
            <p onClick={handleOpenClose} className="heading">
-           {opened? <ArrowDropDownIcon fontSize="large" /> :<ArrowRightIcon fontSize="large"/> }  
+           {opened? <ArrowDropDownIcon fontSize="large" /> :<ArrowRightIcon fontSize="large"/> }
              &nbsp;
-            <input type="text" className="input" name="pageName" placeholder="Page Title"/>
+            <input type="text" className="input" name="pageName" placeholder={t('PAGE_TITLE')}/>
            </p>
-           <p> {Object.keys(mainfetch).length} Questions</p>
+           <p> {Object.keys(mainfetch).length} {t('NO_OF_QUESTIONS')}</p>
 
            <section className="blue-section">
                 <input checked={checkd} onChange={handleCheck}
-                type="checkbox" name="check" class="checkbox" id="check"/>
-                <label class="checkbox-label" htmlFor="check">
-                    <p className="popup" id="toggle-checkbox" href=""> Add Question</p>
-                    {checkd?<i class="fas fa-times" id="cancel-icon"></i> :null
+                type="checkbox" name="check" className="checkbox" id="check"/>
+                <label className="checkbox-label" htmlFor="check">
+                    <p className="popup" id="toggle-checkbox" href=""> {t('ADD_QUESTION')}</p>
+                    {checkd?<i className="fas fa-times" id="cancel-icon"></i> :null
                     }
                  </label>
             
 
 
-            <a className="a" href=""> Import Question</a>
-            <a className="a" href=""> * Question Branching</a>
+            <a className="a" href=""> {t('IMPORT_QUESTION')}</a>
+            <a className="a" href=""> <QuestionBranchingHeader />{t('QUESTION_BRANCHING')}</a>
            </section>
-           <a className="a" style={{color:"#697A8B"}} href=""> <FileCopyIcon fontSize="small" /> </a>
-           <a className="a" style={{color:"#697A8B"}} href=""> <DeleteIcon fontSize="small"/></a>
+           <a className="a" style={{color:"#697A8B"}} href=""> <Duplicate /></a>
+           <a className="a" style={{color:"#697A8B"}} href=""> <Deleteg /></a>
         </div>
         {opened?
             <div>
-            <p className="noQuesMessage">There are no questions for this survey. Click on "Add Questions" or "Import Questions" tab.</p>
+            <p className="noQuesMessage">{t('PAGE_TITLE_MESSAGE')}</p>
             
              {/* {main.map(q => (
                 <div className="rendered">
@@ -132,10 +142,10 @@ function PageTitle() {
                     </div>
                     
                     <div className="rendered-buttons">
-                        <button><FileCopyIcon fontSize="small" /></button>
-                        <button><DeleteIcon fontSize="small"/></button>
-                        <button><FileCopyIcon fontSize="small" /></button>
-                        <button><DeleteIcon fontSize="small"/></button>
+                        <button><Edit /></button>
+                        <button><QuestionBranching /></button>
+                        <button><Duplicate /></button>
+                        <button><Deleteg /></button>
                     </div>
                 </div>
                         
@@ -155,7 +165,7 @@ function PageTitle() {
             </div>
             
             :null}
-            <button className="addPage"> Add Page</button>
+            <button className="addPage"> {t('ADD_PAGE')}</button>
             {checkd?<EditQuestion2 actionSave={saveAction} getData={importData} className="popup"/> :null
             }
             

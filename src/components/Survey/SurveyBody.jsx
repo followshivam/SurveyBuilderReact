@@ -17,6 +17,7 @@ function SurveyBody() {
              <Route path="/CreateQuestions"> <CreateQuestions/> </Route>
              <Route path="/Publish"> <Publish/> </Route>
              <Route path="/Results"> <Results/> </Route>
+             <Route path="/"> <SurveyDefinition/> </Route>
         </Switch>
             </div>
         </Router>

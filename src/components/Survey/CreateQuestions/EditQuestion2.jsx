@@ -1,9 +1,11 @@
 import React,{useState} from 'react'
 import Select from '@material-ui/core/Select';
 import "./EditQuestion2.css";
+import { useTranslation } from 'react-i18next';
 
 function EditQuestion2(props) {
     
+    const { t } = useTranslation();
     const [questions,setQuestions]=useState([]);
     
     const [quesData, setQuesData]=useState({
@@ -51,33 +53,33 @@ function EditQuestion2(props) {
 
     return (
         <div className="question-popup">
-        <p class="ques-heading"> Properties</p>
-        <p>Question</p>
-        <input required className="question-input" name="question" onChange={handleChange} value={quesData.question} type="text" placeholder="Type your question here"/> <br/> <br/>
+        <p className="ques-heading">{t('PROPERTIES')}</p>
+        <p>{t('QUESTION')}</p>
+        <input required className="question-input" name="question" onChange={handleChange} value={quesData.question} type="text" placeholder={t('QUESTION_PLACEHOLDER')}/> <br/> <br/>
         
-        <input name="isMandatory" type="checkbox" onChange={handleChange} id="mandatory"/> <label htmlFor="mandatory">Make this question mandatory.</label> <br/> <br/>
+        <input name="isMandatory" type="checkbox" onChange={handleChange} id="mandatory"/> <label htmlFor="mandatory">{t('MAKE_QUESTION_MANDATORY')}</label> <br/> <br/>
         
-        <p>Answer Type</p>
+        <p>{t('ANSWER_TYPE')}</p>
             <Select
             value={quesData.type}
               onChange={handleChange}
               native
               label="type"
-              inputProps={{
+              inputprops={{
               name: "type",
               id: "type",
             }}>
             <option aria-label="Select" value="Select" />
-            <option value="dropdown">Dropdown</option>
-            <option value="single-select">Multiple Choice(Single Select)</option>
-            <option value="multi-select">Multiple Choice(Multi Select)</option>
-            <option value="short">Short Answer</option>
-            <option value="long">Long Answer</option>
-            <option value="date-time">Date/Time</option>
+            <option value="dropdown">{t('DROPDOWN')}</option>
+            <option value="single-select">{t('MCQ_SS')}</option>
+            <option value="multi-select">{t('MCQ_MS')}</option>
+            <option value="short">{t('SHORT_ANSWER')}</option>
+            <option value="long">{t('LONG_ANSWER')}</option>
+            <option value="date-time">{t('DATE_TIME')}</option>
             </Select> <br/> <br/>
             <div className="sc-buttons">
-                <button className="cancel-button">Cancel</button>
-                <button onClick={handleSave} className="save-button">Save</button>
+                <button className="cancel-button">{t('CANCEL_BTN')}</button>
+                <button onClick={handleSave} className="save-button">{t('SAVE_BTN')}</button>
             </div>
             <ul>
              {questions.map(q => (

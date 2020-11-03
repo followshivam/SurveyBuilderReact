@@ -8,10 +8,12 @@ import FormatIndentDecreaseIcon from '@material-ui/icons/FormatIndentDecrease';
 import FormatIndentIncreaseIcon from '@material-ui/icons/FormatIndentIncrease';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
-
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 
 function WelcomeMessage() {
 
+    const { t } = useTranslation();
     const [opened,setOpened]=useState(false);
     
     function handleOpenClose(){
@@ -26,12 +28,12 @@ function WelcomeMessage() {
                 <ArrowDropDownIcon fontSize="large" />
                 : <ArrowRightIcon  fontSize="large"/>}
                  &nbsp;  
-                Welcome Message 
+                {t('WELCOME_MESSAGE')}
             </p>
             </div>
         {opened===true?
             <div className="title">
-                <p>Welcome Text</p>
+                <p>{t('WELCOME_TEXT')}</p>
                 <div className="message">
                     <div className="buttons">
                         <button><FormatBoldIcon fontSize="small"/></button>
@@ -45,8 +47,8 @@ function WelcomeMessage() {
                         <button><FormatListBulletedIcon fontSize="small"/></button>
                     </div>
                     <div className="text">
-                        <h2>Dear Team,</h2>
-                        <h4>Please take a moment to fill out a short survey we wil use to improve your experience.</h4>
+                        <h2>{t('DEAR_TEAM')}</h2>
+                        <h4>{t('WELCOME_TEXT_MESSAGE')}</h4>
                     </div>
                 </div>
             </div>
