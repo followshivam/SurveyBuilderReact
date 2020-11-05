@@ -16,12 +16,14 @@ function ThankYou(props) {
     }
 
     return (
-        <div onClick={handleOpenClose} className="thankYou">
-           <p className="heading"> 
-           {opened? <ArrowDropDownIcon fontSize="large"/> : <ArrowRightIcon fontSize="large"/> } &nbsp; {t('THANK_YOU_PAGE')} </p>
-           {opened? 
-           <p className="thankYouMessage">{t('THANK_YOU_MESSAGE')}</p>
-            : null}
+        <div  className="thankYou">
+            <div onClick={handleOpenClose}>
+                <p  className="heading"> 
+                {opened? <ArrowDropDownIcon fontSize="large"/> : <ArrowRightIcon fontSize="large"/> } &nbsp; {t('THANK_YOU_PAGE')} </p>
+            </div>
+                {opened? 
+                <p className="thankYouMessage">{t('THANK_YOU_MESSAGE')}</p>
+                : null}
         </div>
     )
 }

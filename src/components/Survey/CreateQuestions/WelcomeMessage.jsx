@@ -21,9 +21,9 @@ function WelcomeMessage() {
     }
 
     return (
-        <div onClick={handleOpenClose}  className="welcomeMessage">
-            <div className="heading-div" >
-            <p className="heading"> &nbsp;
+        <div className="welcomeMessage">
+            <div onClick={handleOpenClose} className="heading-div" >
+            <p  className="heading"> &nbsp;
             {opened===true? 
                 <ArrowDropDownIcon fontSize="large" />
                 : <ArrowRightIcon  fontSize="large"/>}

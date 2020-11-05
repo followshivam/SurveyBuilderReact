@@ -53,10 +53,13 @@ function SurveyHeader(props) {
              </p>*/}
             <div className="survey-subheader">
                 <div className="survey-sub">
-                    <p className="survey-title"> {t('SURVEY_TITLE')}</p>
+                    <p className="survey-title">
+                    {props.title===""? t('SURVEY_TITLE') : props.title}
+                    
+                    </p>
                 </div>
-                <p> <SvgSettings />{t('SETTINGS')}</p>
-                <p onClick={handleSave} className="saveDef-button" > <SvgSave/> {t('SAVE')}</p>
+                <p> <SvgSettings /> &nbsp; {t('SETTINGS')}</p>
+                <p onClick={handleSave} className="saveDef-button" > <SvgSave/> &nbsp; {t('SAVE')}</p>
                 
             </div>
         </div>

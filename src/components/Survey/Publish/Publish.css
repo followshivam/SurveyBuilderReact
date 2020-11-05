@@ -1,0 +1,70 @@
+
+.Cont1{
+    margin-right: 20px;
+    /* padding: 6px; */
+    color: cornsilk;
+    background-color: cornflowerblue;
+    height: 35px;
+    text-align: center;
+}
+
+.back{
+    margin-top:15px;
+    margin-left: -5px;
+}
+
+.Cont2{
+    margin-left: 20px;
+    /* padding: 6px; */
+    border-color:rgb(76, 194, 230);;
+    color: rgb(76, 194, 230);
+    background-color: transparent;
+    width: 110px;
+    height: 35px;
+    text-align: center;
+}
+
+.Cont3{
+    margin-top: 20px;
+    padding: 5px;
+    color: cornsilk;
+    background-color: cornflowerblue;
+    width:90px;
+}
+
+.Conte
+{
+    margin-left: 28px; 
+}
+
+.Con
+{
+    margin-left: 13px; 
+}
+
+.Conte2
+{
+    margin-top: 15px; 
+    margin-left: 20px; 
+}
+
+.Sel{
+    margin-bottom: 15px;;
+}
+
+.Sel2{
+    width: 300px;
+    height: 27px;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }

@@ -15,15 +15,21 @@ import Save from "../../../iconComponents/Save.tsx";
 import Settings from "../../../iconComponents/Settings.tsx";
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
+import {addInfo} from "../../../Actions/Listen";
+import {connect} from "react-redux";
+import ImportQuestions from "./importQuestions";
 
-function PageTitle() {
+
+function PageTitle(props) {
 
     const { t } = useTranslation();
-
+    // const [count,setCount]=useState(1);
     const [main, setMain]=useState([]);
     const [mainfetch, setMainfetch]=useState({});
     const [opened,setOpened]=useState(false);
     const [checkd,setCheckd]=useState(false);
+    const [checked,setChecked]=useState(false);
+    const [selectedId,setSelectedId] =useState("");
 
     useEffect(()=>{
         firebaseDb.child("questionsData").on("value",snapshot=>{
@@ -31,9 +37,16 @@ function PageTitle() {
             setMainfetch({
                 ...snapshot.val()
             })
+            else{
+                setMainfetch({})
+            }
         })
     }
     ,[]);
+
+    // useEffect(()=>{
+    //     console.log(selectedId);
+    // },[selectedId])
 
     function handleOpenClose(){
         setOpened(!opened);
@@ -41,6 +54,9 @@ function PageTitle() {
     function handleCheck(){
         setCheckd(!checkd);
     }
+    function handleCheck2(){
+         setChecked(!checked);
+     }
     function importData(data){
         setMain([
             ...main,
@@ -51,21 +67,61 @@ function PageTitle() {
                 type:data.type
             }
         ]);
+        if(selectedId===""){
         firebaseDb.child("questionsData").push(
             data,
             err=>{
                 if(err){
                     console.log(err);
+                } else
+                {
+                    setSelectedId("");
                 }
             }
-        )
+        )} else
+        {
+            firebaseDb.child(`questionsData/${selectedId}`).set(
+                data,
+                err=>{
+                    if(err){
+                        console.log(err);
+                    } else
+                    {
+                        setSelectedId("");
+                    }
+                }
+            )
+        }
     }
+
     function saveAction(){
         setOpened(true);
         setCheckd(false);
     }
+    function handleEdit(id){
+        setSelectedId(id);
+        console.log(id);
+        setCheckd(true);
+    }
 
-    console.log({main});
+    function handleDelete(id){
+        console.log("delete called");
+        console.log(id);
+                
+        if(window.confirm("Are you sure you want to delete this question?")){
+            firebaseDb.child(`questionsData/${id}`).remove(
+                err=>{
+                    if(err){
+                        console.log(err);
+                    } else
+                    {
+                        setSelectedId("");
+                    }
+                }
+            )
+        }
+    }
+    // console.log({main});
     console.log({mainfetch});
     
     return (
@@ -86,18 +142,24 @@ function PageTitle() {
                     {checkd?<i className="fas fa-times" id="cancel-icon"></i> :null
                     }
                  </label>
-            
 
+                 <input checked={checked} onChange={handleCheck2}
+                type="checkbox" name="check2" class="checkbox" id="check2"/>
+                <label class="checkbox-label" htmlFor="check2">
+                    <p className="popup" id="toggle-checkbox" href=""> {t('IMPORT_QUESTION')}</p>
+                    {checked?<i class="fas fa-times" id="cancel-icon"></i> :null
+                    }
+                 </label>  
 
-            <a className="a" href=""> {t('IMPORT_QUESTION')}</a>
-            <a className="a" href=""> <QuestionBranchingHeader />{t('QUESTION_BRANCHING')}</a>
-           </section>
-           <a className="a" style={{color:"#697A8B"}} href=""> <Duplicate /></a>
-           <a className="a" style={{color:"#697A8B"}} href=""> <Deleteg /></a>
+                {/* <a className="a" href=""> {t('IMPORT_QUESTION')}</a> */}
+                <a className="a" href=""> <QuestionBranchingHeader />{t('QUESTION_BRANCHING')}</a>
+            </section>
+            <a className="a" style={{color:"#697A8B"}} href=""> <Duplicate /></a> 
+            <a className="a" style={{color:"#697A8B"}} href=""> <Deleteg /></a>
         </div>
         {opened?
             <div>
-            <p className="noQuesMessage">{t('PAGE_TITLE_MESSAGE')}</p>
+            {Object.keys(mainfetch).length===0?<p className="noQuesMessage">{t('PAGE_TITLE_MESSAGE')}</p>:null}
             
              {/* {main.map(q => (
                 <div className="rendered">
@@ -131,21 +193,19 @@ function PageTitle() {
                 </div>
                 ))} */}
 
-
                 {
-                    Object.keys(mainfetch).map(id=>{
+                    Object.keys(mainfetch).map((id,count)=>{
                         return(<div key={id} className="rendered">
                     <div className="rendered-data">
-                        <p className="p1" > {mainfetch[id].id}. &nbsp; {mainfetch[id].question} </p>
+                        <p className="p1" > {count+1}. &nbsp; {mainfetch[id].question} </p>
                         <p className="p2">{mainfetch[id].type}</p>
-                        
                     </div>
                     
                     <div className="rendered-buttons">
-                        <button><Edit /></button>
-                        <button><QuestionBranching /></button>
-                        <button><Duplicate /></button>
-                        <button><Deleteg /></button>
+                        <a onClick={() => handleEdit(id)}><Edit /> </a>
+                        <a ><QuestionBranching /></a>
+                        <a><Duplicate /></a>
+                        <a onClick={() => handleDelete(id)}> <Deleteg /></a>
                     </div>
                 </div>
                         
@@ -165,12 +225,39 @@ function PageTitle() {
             </div>
             
             :null}
-            <button className="addPage"> {t('ADD_PAGE')}</button>
-            {checkd?<EditQuestion2 actionSave={saveAction} getData={importData} className="popup"/> :null
+            {props.display==="display3" ? <button className="addPage"> {t('ADD_PAGE')}</button> : 
+            null
+            /* <button disabled style={{borderColor:"grey" , color:"grey"}} className="addPage"> {t('ADD_PAGE')}</button>
+             */
+             }
+            
+            {checkd?<EditQuestion2 mainfetch={mainfetch} selectedId={selectedId} handleCheck={handleCheck} actionSave={saveAction} getData={importData} className="popup"/> :null
+            }
+            {checked?<ImportQuestions className="popup"/> :null
             }
             
         </div>
     )
 }
 
-export default PageTitle
+function mapStateToProps(state){
+  return{
+    title:state.surveyInfo.title,
+    description:state.surveyInfo.description,
+    project:state.surveyInfo.project,
+    duration:state.surveyInfo.duration,
+    logo:state.surveyInfo.logo,
+    display:state.surveyInfo.display,
+    showProgress:state.surveyInfo.showProgress,
+    showQuestions:state.surveyInfo.showQuestions
+  }
+}
+
+function matDispatchToProps(dispatch){
+  return{
+    changeData:(data)=>{dispatch(addInfo(data))}
+  }
+}
+
+export default connect(mapStateToProps,matDispatchToProps)(PageTitle);
+

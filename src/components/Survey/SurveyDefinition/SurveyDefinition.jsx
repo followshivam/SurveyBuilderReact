@@ -118,7 +118,7 @@ const { RangePicker } = DatePicker;
             type="text" id="description" placeholder={t('ENTER_DESCRIPTION')} required />
         </div>
 
-        <div className="surveydef-div">
+        {/* <div className="surveydef-div">
             <label htmlFor="project"><span className="span">* &nbsp;</span>{t('PROJECT')}:</label>
             <select
               // native="true"
@@ -134,7 +134,7 @@ const { RangePicker } = DatePicker;
               <option className="sel" value="Testing">{t("TESTING")}</option>
               <option className="sel"value="Admin">{t("ADMIN")}</option>
             </select>
-            </div>
+            </div> */}
         {/* <div className="surveydef-div">
             <label htmlFor="description">Description:</label>
             <TextareaAutosize rowsMin={3} onChange={handleChange} name="description" 

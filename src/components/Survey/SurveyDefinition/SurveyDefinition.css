@@ -11,7 +11,7 @@
     margin-left: 9px;
   position: relative;
   display: inline-block;
-  width: 52px;
+  width: 60px;
   height: 28px;
 }
 
@@ -36,8 +36,8 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
+  height: 25px;
+  width: 25px;
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -50,7 +50,7 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #0072C6;
 }
 
 input:checked + .slider:before {
