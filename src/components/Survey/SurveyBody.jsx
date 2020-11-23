@@ -13,7 +13,7 @@ function SurveyBody() {
         <div>
             <SurveyBodyHeader/>
             <Switch>
-             <Route path="/SurveyDefinition"> <SurveyDefinition/> </Route>
+             {/* <Route path="/SurveyDefinition"> <SurveyDefinition/> </Route> */}
              <Route path="/CreateQuestions"> <CreateQuestions/> </Route>
              <Route path="/Publish"> <Publish/> </Route>
              <Route path="/Results"> <Results/> </Route>

@@ -1,0 +1,111 @@
+.quesPopup{
+    margin: 0em;
+    position: absolute;
+
+    top:20%;
+    /* top:12em; */
+    /* left:35em; */
+    left: 27%;
+ 
+    /* right:15em; */
+    right: 13%;
+    bottom:14%;
+    /* bottom:12em; */
+
+    /* height:480px; */
+    height:64%;
+    /* width:50vw; */
+    width: 50%;
+    z-index: 1;
+    /* padding:1em; */
+    background: #FFFFFF;
+    box-shadow: 0 3px 6px 0;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.CreateButton2{
+    position: fixed;
+    /* top: 150px; */
+    top: 21%;
+    /* right: 395px; */
+    right: 26%; 
+    background: #0072C6;
+    border-radius: 2px;
+    border-radius: 2px;
+    width: 75px;
+    height: 24px;
+    /* font-family: OpenSans-Semibold; */
+font-size: 10px;
+color: #FFFFFF;
+line-height: 22px;
+}
+
+.questionPageTitle
+{
+    background: #FCFCFC;
+border: 1px solid #828282;
+border-radius: 2px;
+border-radius: 2px;
+/* margin-right: 17px; */
+margin-right: 2%;
+/* margin-bottom: 16px; */
+margin-bottom: 1%;
+
+/* padding-top: 4px; */
+padding-top: 1%;
+/* padding-bottom: 12px; */
+padding-bottom: 3.75%;
+
+/* padding-left: 6px; */
+padding-left: 2%;
+padding-right: 1%;
+width: 97%;
+height: 32px;
+
+}
+
+.Delete{
+    /* margin-left: 43%;   */
+    padding: 1%;
+    /* padding-top: 10px; */
+    /* margin-left: 530px;
+    margin-right: 16px; */
+    /* top: 10px; */
+    /* display: inline; */
+}
+.Edit{
+    /* float: left; */
+    margin-top: 5%;
+    margin-left: 41.2%; 
+}
+
+.Duplicate
+{
+    /* margin-left: 1%; */
+    margin-top: 5%;
+    /* margin-left: 30%;   */
+    /* top: 10px; */
+    /* display: inline; */
+}
+
+
+.TitleQuestion{
+    display: inline;
+    margin-left: 21%;
+    font-family: OpenSans;
+/* font-size: 12px; */
+font-size: 100%;
+color: #3E3E3E;
+}
+
+.questionSetTitle #cancel-icon{
+    color:darkgray;
+    display: inline;
+    margin-top: -7px;
+    margin-bottom: 8px;
+    /* margin-right: -240px; */
+    margin-right: -31%;
+    transform: scaleX(-1);
+}
+

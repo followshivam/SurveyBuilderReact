@@ -1,28 +1,39 @@
+.shade-main2{
+  position: absolute;
+  z-index: 5;
+  left:0%;
+  top:0%;
+  height:100%;
+  width:100%;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  opacity: 0.37;
+  background: #000000;
+}
 .question-popup{
     position: absolute;
     top:0em;
     right:0em;
     height:100vh;
     width:35vw;
-    z-index: 1;
+    z-index: 6;
     padding:2em;
     background: #FFFFFF;
     box-shadow: 0 3px 6px 0;
     font-size: 12px;
     font-weight: 600;
+    overflow: scroll !important;
 }
 .question-popup .ques-heading{
     font-size: 14px;
     text-align: center;
 }
-
- #cancel-icon{
-     position: absolute;
-     top:1em;
-     right:33%;
-     font-size:1.5em;
-     z-index: 2;
-     cursor:pointer;
+#cancel-icon{
+  position: absolute;
+  top:1em;
+  right:33%;
+  font-size:1.5em;
+  z-index: 7;
+  cursor:pointer;
 }
 #check, #check2{
     display: none;
@@ -48,6 +59,7 @@
     background: #FFFFFF;
     border: 1px solid #D4D4D4;
     border-radius: 2px;
+    caret-color: black !important;
 }
 .sc-buttons{
     position: absolute;
@@ -100,11 +112,14 @@
     padding:8px !important;
   }
   .table {
+    height:300px;
     border: 2px solid lightgrey;
     border-radius: 4px;
+    overflow-y:scroll;
   }
   .target-field-header {
     margin-left: 8px;
+    float:left;
     color: #0072c6;
   }
   .source-field-header {
@@ -116,6 +131,7 @@
   .target-field-column {
     margin-left: 8px;
     color: darkgray;
+    float:left;
   }
   
   .source-field-column {
@@ -131,13 +147,15 @@
     text-align:center;
   }
   .separator {
+    width:100%;
+    float:left;
     margin:28px 0;
   }
   .separator-text {
     margin:6px 4px;
     margin-right:2px;
     font-size:13px;
-    font-weight:bold;
+    /* font-weight:bold; */
   }
   .separator-select {
     width:125px;
@@ -171,11 +189,13 @@
     outline:none;
   }
   .mapping {
+    margin-top:16px;
     font-size:14px;
     font-weight:bold;
   }
   .div-bottom {
-    margin:16px 0;
+    margin-top:16px;
+    margin-bottom: 8px;
     font-size:13px;
     font-weight:bold;
   }
@@ -187,6 +207,18 @@
     padding:3px;
     outline:none;
   }
+  .bottomDiv1 {
+    position : fixed;
+    bottom: 0 !important;
+    right : 0;
+    margin-right: 3rem;
+    }
+  .bottomDiv2 {
+    position : absolute;
+    bottom: 0 !important;
+    right : 0;
+    margin-right: 3rem;
+    }
   .cancel-button {
     margin-bottom:1rem;
     padding:5px 11px;
@@ -199,8 +231,8 @@
     outline:none;
   }
   .import-button {
+    margin-bottom: 3rem;
     margin-left:8px;
-    margin-bottom:1rem;
     padding:5px 11px;
     background: #0072c6;
     border : 1px solid #0072c6;
@@ -209,5 +241,108 @@
     float:right;
     font-weight:bold;
     outline:none;
+    
+  }
+  .import-button-disabled {
+    margin-bottom: 3rem;
+    margin-left:8px;
+    padding:5px 11px;
+    background: gray;
+    border : 1px solid lightgray;
+    border-radius: 2px;
+    color: #ffffff;
+    float:right;
+    font-weight:bold;
+    outline:none;
+  }
+
+  .validate-Question-edit {
+    margin-top:2rem;
+    color:red;
+    font-weight:bold;
   }
   
+    .file-input {
+      border : 1px solid gray ;
+    }
+    @media screen and (max-width: 1272px) {
+      .table {
+        height:250px;
+        overflow-y:scroll;
+      }
+      .choose-file-input {
+        width:200px;
+        margin: 10px 0;
+        border:1px solid lightgray; 
+      }
+     .define-mapping {
+        white-space: break-spaces;
+        margin-top: 4px;
+        float: left;
+     }
+     .separator {
+        margin : 24px 0;
+     }
+    } 
+    
+  .selectClass
+  {
+    /* border-top: black; */
+border: 1px solid #D4D4D4;
+background-position:300px;
+width:376px;
+height: 32px;
+border-radius:1px;
+background-color:white;
+text-decoration: none;
+border-bottom: none;
+color:#D4D4D4;
+/* display: inline-block; */
+/* box-shadow:inset 0 0 10px 0 rgba(0,0,0,0); */
+  }
+
+  .optionInput
+{
+  background-color: white;
+  border: 1px solid #C9C9C9;
+  width:48.5%;
+  display: inline;
+  margin-right: 3%;
+  height: 31px;
+  caret-color: black !important;
+}
+
+.valueInput
+{
+  background-color: white;
+  border: 1px solid #C9C9C9;
+  width:25%;
+  display: inline;
+  margin-right: 3%;
+  height: 31px;
+  caret-color: black !important;
+}
+
+.scoreInput
+{
+  background-color: white;
+  border: 1px solid #C9C9C9;
+  width:9%;
+  display: inline;
+  margin-right: 3%;
+  height: 31px;
+}
+
+.plusButton{
+  /* margin-top: 28px; */
+  background-color:#0072C6;
+  border: 1px solid #C9C9C9;
+  color: white;
+  border-radius: 2px;
+  width:6%;
+  display: inline;
+  height: 31px;
+  font-size: 14px;
+  text-align: center;
+
+}

@@ -9,6 +9,7 @@ import SvgSave from "../../iconComponents/Save.tsx";
 import SvgSettings from "../../iconComponents/Settings.tsx";
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
+import axios from "axios";
 
 function SurveyHeader(props) {
 
@@ -21,6 +22,63 @@ function SurveyHeader(props) {
     const { t } = useTranslation();
     
     function handleSave(){
+
+        console.log(props.title);
+
+    //     let pl=1;
+
+    //     for(let i=0;i<props.title.length;i++)
+    //         {
+    //            if((props.title[i]>='a' && props.title[i]<='z')||(props.title[i]>='A' && props.title[i]<='Z'))
+    //            {
+
+    //            }else
+    //            {
+    //             pl=0;
+    //             break;
+    //             //   alert("charater should be alphabets");
+    //            }
+    //         }
+
+    //      if(props.title.length===0)
+    //     {
+    //         alert("Title cannot be left blank.");
+    //     }
+    //     else if(props.title.length<=5)
+    //     {
+    //         alert("Title length should be greater than 5 characters");
+    //     }
+
+    //     else if(pl===0) {
+
+    //             alert("Characters should be alphanumeric");
+
+    //         }
+
+
+    //     // else if(props.project.length===0)
+    //     // {
+    //     //     alert("Please enter the Project");
+    //     // }
+
+    //    else if((props.duration.start.length===0) || (props.duration.end.length===0) )
+    //     {
+    //         alert("Duration cannot be left blank.");
+    //     }
+
+    //    else if(props.display.length===0 )
+    //     {
+    //         alert("Please select the display type");
+    //     }
+
+    axios.post("http://localhost:3001/",props.title)
+    .then(response =>{
+        console.log(response)
+    })
+    .catch(error =>{
+        console.log(error.response)
+    })
+
         firebaseDb.child("definitionData").set(
             {
                 title:props.title,

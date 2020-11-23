@@ -9,9 +9,16 @@ function EditQuestion2(props) {
     // const [questions,setQuestions]=useState([]);
     const [quesNo,setQuesNo]=useState(1);
     const [scoring,setScoring]=useState(false);
+    const [validQuestion, setValidity] = useState(false);
     // const [optionName,setOptionName]=useState("");
     // const [optionValue,setOptionValue]=useState("");
     // const [optionScore,setOptionScore]=useState("");
+    const [answerType, setAnswerType] = useState(false);
+    const [optionCheck, setOptionCheck] = useState(false);
+    const [valueCheck, setValueCheck] = useState(false);
+    const [scoringCheck, setScoringCheck] = useState(false);
+    const [rowAdded, setRowAdded] = useState(false);
+
     const [option,setOption]=useState({
         name:"",
         value:"",
@@ -37,16 +44,80 @@ function EditQuestion2(props) {
         } else
         {
             setQuesData({
-                ...props.mainfetch[props.selectedId]
+                ...(props.pageData[props.selectedIdd])[props.selectedId]
             });
             
         }
         
-    }, [props.mainfetch, props.selectedId])
+    }, [props.pageData, props.selectedId, props.selectedIdd])
 
+    function handleValidation(){
+            setAnswerType(false);
+            setOptionCheck(false);
+            setValueCheck(false);
+            setScoringCheck(false);
+
+        if(!validQuestion){
+                    setValidity(true);
+                    return;
+                    }
+    }
+    
+    function handleAnswerType(){
+                
+        setValidity(false);
+        setOptionCheck(false);
+        setValueCheck(false);
+        setScoringCheck(false);
+       
+   if(!answerType){
+        setAnswerType(true);
+        return;
+    }
+
+}
+function handleOptionName() {
+        
+        setValidity(false);
+        setAnswerType(false);                   
+        setValueCheck(false);
+        setScoringCheck(false);
+       
+   if(!optionCheck){
+        setOptionCheck(true);
+        return;
+    }
+}
+function handleValue(){
+
+    
+        setValidity(false);
+        setAnswerType(false);
+        setOptionCheck(false);
+        setScoringCheck(false);
+      
+   if(!valueCheck){
+        setValueCheck(true);
+        return;
+    }
+}
+function handleScoring(){
+
+    
+        setValidity(false);
+        setAnswerType(false);
+        setOptionCheck(false);
+        setValueCheck(false);
+      
+        
+ if(!scoringCheck){
+        setScoringCheck(true);
+        return;
+}
+}
 
     function handleChange(event){
-        event.preventDefault();
+        // event.preventDefault();
         const {name,value}=event.target;
         if(name==="scoring"){
             setScoring(!scoring);
@@ -80,7 +151,31 @@ function EditQuestion2(props) {
     }
     function handleOptions(event){
         event.preventDefault();
-        console.log("handle options called");
+        console.log("handle options called:",option.score);
+        setRowAdded(false);
+        if(option.name.length===0){
+            console.log("name: ",option.name.length);
+            handleOptionName();
+           return;
+        }
+        else if(option.value.length===0){
+            console.log("value: ",option.value.length);
+            setOptionCheck(false);
+            handleValue();
+            return;
+        }
+        else if(scoring && option.score<=0){
+            console.log("Score: ");
+            setValueCheck(false);
+            handleScoring();
+            return;
+        }
+        setValueCheck(false);
+        setScoringCheck(false);
+        setRowAdded(false);
+        
+        console.log("yes");
+
         setOptions((prev)=>{
             return{
                 ...prev,[option.name]:{"value":option.value,
@@ -96,6 +191,40 @@ function EditQuestion2(props) {
     
     function handleSave(event){
         event.preventDefault();
+        var quesRegex = /^[0-9a-zA-Z%\.]+[0-9a-zA-Z\\s?\.]*/;
+        var ques = quesData.question.trim();
+        console.log(quesData.type===''?'hi':'hello');
+        if(quesData.question.length<1){
+            setRowAdded(false);
+            setOptionCheck(false);
+            setValueCheck(false);
+            setScoringCheck(false);
+            setAnswerType(false);
+            console.log(quesData.question);
+            handleValidation();
+            return;
+        }
+        else if (quesData.type==='Select' || quesData.type===''){
+            setRowAdded(false);
+            setOptionCheck(false);
+            setValueCheck(false);
+            setScoringCheck(false);
+            console.log("length:",quesData.type.length);
+            handleAnswerType();
+            return;        
+        }
+        else if(quesData.type==='dropdown' || quesData.type==='single-select' || quesData.type==='multi-select'){
+            setValidity(false);
+            setAnswerType(false);
+            setOptionCheck(false);
+            setValueCheck(false);
+            setScoringCheck(false);
+            if(Object.keys(options).length<1){
+            setRowAdded(true);
+                return;
+            }
+        }
+        console.log(option.name.length,option.value,quesData.scoring);
         // setQuestions([
         //     ...questions,
         //     {
@@ -124,21 +253,27 @@ function EditQuestion2(props) {
     // console.log({quesData});
     console.log({quesData});
     console.log({options});
-    
+    console.log("size:",Object.keys(options).length,"   ",option.name.length,option.value.length,option.score);
+
 
     return (
+        <>
+        <div className="shade-main2"></div>
         <div className="question-popup">
         {/* <form>  */}
         <p className="ques-heading">{t('PROPERTIES')}</p>
         <p>{t('QUESTION')}</p>
         <input required className="question-input" name="question" onChange={handleChange} required 
         value={quesData.question} type="text" placeholder={t('QUESTION_PLACEHOLDER')}/> <br/> <br/>
+
+        {validQuestion?<p className="validate-Question-edit" > {t('ADD_QUESTION_INVALID_MSG')} </p>:null } 
         
         <input name="isMandatory" value="true" type="checkbox" onChange={handleChange} required id="mandatory"/> <label htmlFor="mandatory">{t('MAKE_QUESTION_MANDATORY')}</label> <br/> <br/>
         
         <p>{t('ANSWER_TYPE')}</p>
         <Select
-            value={quesData.type}
+              className="selectClass"
+              value={quesData.type}
               onChange={handleChange}
               native
               label="type"
@@ -160,39 +295,40 @@ function EditQuestion2(props) {
             <h3 style={{fontWeight:"900"}}> Options</h3> 
             <input name="scoring" type="checkbox" value="true"
             onChange={handleChange} id="scoring"/>
-            <label htmlFor="scoring">
+            <label htmlFor="scoring" style={{ marginLeft:"2px"}}>
             Enable Scoring for the Answers.</label> <br/> <br/>
-            <p style={{marginLeft:"5em", display:"inline"}} >Option</p> <p style={{marginLeft:"6em", display:"inline"}}>  Value</p> 
-            {scoring? <p style={{marginLeft:"6em", display:"inline"}} > Scoring</p>: null} <br/>
+            <p style={{ display:"inline"}} >Option</p> 
+            <p style={{marginLeft:"44%", display:"inline"}}>  Value</p> 
+            {scoring? <p style={{marginLeft:"22%", display:"inline"}} > Scoring</p>: null} <br/>
                 
             {/* <form > */}
-                <input required type="text" name="name" onChange={handleOption}/> 
-                <input required type="text" name="value" onChange={handleOption}/>
+                <input className="optionInput" required type="text" name="name" onChange={handleOption}/> 
+                <input className="valueInput" required type="text" name="value" onChange={handleOption}/>
                 {scoring?
-                <input type="number" min="-2" max="4" placeholder="0" name="score" onChange={handleOption}/>
+                <input className="scoreInput" type="number" min="-2" max="4" placeholder="0" name="score" onChange={handleOption}/>
                  : null}
-                <button onClick={handleOptions} type="submit" >+</button> <br/> <br/>
+                <button className="plusButton" onClick={handleOptions} type="submit" ><i class='fas fa-plus'></i></button> <br/> <br/>
 
             {/* </form> */}
-            <p style={{margin:"1em 4em", display: "inline"}}>Option</p> <p style={{margin:"1em 6em", display: "inline"}}>Value</p> <br/>
+            {/* <p style={{margin:"1em 4em", display: "inline"}}>Option</p> <p style={{margin:"1em 6em", display: "inline"}}>Value</p> <br/> */}
 
             <table className="optionsTable">
                 <thead>
                     <tr  >
-                        <th className="optionsTH" >Option</th>
-                        <th className="optionsTH" >Value</th>
+                        <th style={{width:"48.5%"}} className="optionsTH" >Option</th>
+                        <th style={{width:"28%"}} className="optionsTH" >Value</th>
                         {scoring? 
-                        <th className="optionsTH" >Score</th>: null}
+                        <th style={{width:"14%"}} className="optionsTH" >Score</th>: null}
                     </tr>
                 </thead>
                 <tbody>
                 {Object.keys(options).map(id=>{
                     return(
                     <tr key={id}>
-                        <td className="optionsTD" > {id}</td>
-                        <td className="optionsTD" > {options[id].value}</td>
+                        <td className="optionsTD" style={{fontWeight:"lighter"}} > {id}</td>
+                        <td className="optionsTD" style={{fontWeight:"lighter"}}> {options[id].value}</td>
                         {scoring?
-                        <td className="optionsTD" > {options[id].score}</td> :null}
+                        <td className="optionsTD" style={{fontWeight:"lighter"}}> {options[id].score}</td> :null}
                     </tr>
                     )
                 })}
@@ -214,9 +350,14 @@ function EditQuestion2(props) {
                     )
                 })} </div> */}
 
+            {answerType ? <p className="validate-Question-edit">{t('ANSWER_TYPE_INVALID_MSG')} </p> : null}
+            {rowAdded ?  <p className="validate-Question-edit">{t('ADD_ROW_MSG')} </p>: null  }
+            {optionCheck ? <p className="validate-Question-edit"> {t('OPTION_FIELD_MSG')} </p> : null}
+            {valueCheck ? <p className="validate-Question-edit"> {t('VALUE_FIELD_MSG')} </p> : null}
+            {scoringCheck ? <p className="validate-Question-edit"> {t('SCORE_MSG')} </p> : null}
+    
+
             
-
-
             <div className="sc-buttons">
                 <button onClick={props.handleCheck} className="cancel-button">{t('CANCEL_BTN')}</button>
                 <button onClick={handleSave} className="save-button">{props.selectedId==="" ? t('SAVE_BTN') :"Update"}</button>
@@ -228,6 +369,7 @@ function EditQuestion2(props) {
             </ul> */}
             {/* </form> */}
         </div>
+        </>
     )
 }
 

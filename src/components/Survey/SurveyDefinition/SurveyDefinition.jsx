@@ -205,7 +205,7 @@ const { RangePicker } = DatePicker;
          </div>
          }
          </div>
-         </div>      
+         </div>
             
         {/* <input
             accept="image/*"
@@ -224,9 +224,9 @@ const { RangePicker } = DatePicker;
         <div className="surveydef-div format-div">
             <label htmlFor="displayFormat"><span className="span">* &nbsp;</span>{t('SURVEY_DISPLAY_FORMAT')}:</label>
             <div className="display-formats">
-              <div className={d==="display1"? "display-format display-clicked" :"display-format"} value="display1"  name="display" onClick={handleClick} > <div className="display-outer" value="display1"  name="display"> <div className="display-logo" value="display1"  name="display"> <img src={display1} value="display1"  name="display"/> </div>  {t("ONE_QUESTION")} <span className="question-logo">?</span></div> </div>
-              <div className={d==="display2"? "display-format display-clicked" :"display-format"} value="display2"  name="display" onClick={handleClick} > <div className="display-outer" value="display2"  name="display"> <div className="display-logo" value="display2"  name="display"> <img src={display2} value="display2"  name="display"/> </div>  {t("ALL_QUESTION")} <span className="question-logo">?</span> </div>  </div>
-              <div className={d==="display3"? "display-format display-clicked" :"display-format"} value="display3"  name="display" onClick={handleClick} > <div className="display-outer" value="display3"  name="display"> <div className="display-logo" value="display3"  name="display"> <img src={display3} value="display3"  name="display"/> </div> {t("PAGEWISE_QUESTIONS")} <span className="question-logo">?</span> </div> </div>
+              <div className={d==="display1"|| props.display==="display1"? "display-format display-clicked" :"display-format"} value="display1"  name="display" onClick={handleClick} > <div className="display-outer" value="display1"  name="display"> <div className="display-logo" value="display1"  name="display"> <img src={display1} value="display1"  name="display"/> </div>  {t("ONE_QUESTION")} <span className="question-logo">?</span></div> </div>
+              <div className={d==="display2"|| props.display==="display2" ? "display-format display-clicked" :"display-format"} value="display2"  name="display" onClick={handleClick} > <div className="display-outer" value="display2"  name="display"> <div className="display-logo" value="display2"  name="display"> <img src={display2} value="display2"  name="display"/> </div>  {t("ALL_QUESTION")} <span className="question-logo">?</span> </div>  </div>
+              <div className={d==="display3"|| props.display==="display3" ? "display-format display-clicked" :"display-format"} value="display3"  name="display" onClick={handleClick} > <div className="display-outer" value="display3"  name="display"> <div className="display-logo" value="display3"  name="display"> <img src={display3} value="display3"  name="display"/> </div> {t("PAGEWISE_QUESTIONS")} <span className="question-logo">?</span> </div> </div>
             </div>
               
         </div>
