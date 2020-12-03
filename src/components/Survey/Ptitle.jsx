@@ -43,41 +43,100 @@ function Ptitle(props) {
                                         }
                     }
                     
-                    
+    const [namesOfQuestionSet,setNamesOfQuestionSet]=useState([]);
+
+    useEffect(()=>{
+    firebaseDb.child("NAMES").on("value",snapshot=>{
+        if(snapshot.val()!=null)
+        setNamesOfQuestionSet({
+            ...snapshot.val()
+        })
+        else{
+           firebaseDb.child("NAMES").push(
+            {},
+        err=>{
+            if(err){
+                console.log(err);
+            }
+        } )
+        }
+    })
+}
+,[]);        
                    
                     
 //    const [checkCreate,setcheckCreate]=useState(false);
 const [checkCreate,setcheckCreate]=useState(true);
+// const [arrayOfId, setarrayOfId]=useState([]);
+const [CheckboxArray, setCheckboxArray]=useState([]);
 
-     function createCheckHandler()
+const [namesArray, setNamesArray]=useState([]);
+
+function createCheckHandler()
      {
-        // setquesPageData([
-        //     ...quesPageData,
-        //    {
-        //      quesData
-        //    }
-        // ]);
-
-
-        // console.log("AFTERQUESPAGEDATA");
-        // console.log({quesPageData});
-        // console.log("AFTERQUESPAGEDATA");
 
         setOpened("");
 
-        console.log("create "+quesData);
-        
+        // console.log("create "+quesData);
+        console.log("qwerty");
+        console.log(quesData);
+        console.log("qwerty");
+        console.log("LENGTH IS");
+        console.log(Object.keys(quesData).length);
+        console.log("LENGTH IS");
+        // console.log("NAMES " + nameQuestion);
+
+
+        Object.keys( namesOfQuestionSet).map((idd,count)=>{
+
+            namesArray.push(namesOfQuestionSet[idd]);
+        })
+
+        var f=1, f1=1, f2=1;
+
+        if(Object.keys(quesData).length===0){
+             f1=0;
+        }
+
+        if(nameQuestion.length===0){
+            f2=0;
+        }
+
+        if(namesArray.includes(nameQuestion))
+        {
+           f=0;
+        }else{
+            namesArray.push(nameQuestion);
+        }
+
+
         if(nameQuestion.length>14)
         {
-            alert("Length of name should be less than 15");   
+            alert("Length of name should be less than 15");
         }
+        else if(f2===0)
+        {
+            alert("please enter the name of question set");
+        }
+        else if(f1===0){
+            alert("please select any question");
+        }
+        else if(f===0)
+        {
+            alert(nameQuestion +" name is already present please enter some other name ");
+        }
+
         else if(nameQuestion!=="")
         {
         firebaseDb.child('NAMES').push(nameQuestion);
         firebaseDb.child('QuestionsSet').push(quesData);
         setQuesData([]);
+        //NEW
+        setarrayOfId([]);
+        setCheckboxArray([]);
+        //NEW
         setnameQuestion("")
-        setcheckCreate(!checkCreate); 
+        setcheckCreate(!checkCreate);
         }else{
             alert("please Create any question Set");
         }
@@ -180,6 +239,7 @@ const [checkCreate,setcheckCreate]=useState(true);
                 {
                     IdOfQuestions.push(id);
                     arrayOfId.push(id);
+                    CheckboxArray.push(id);
                     // setarrayOfId(arrayOfId => [...arrayOfId, id])
                     // setarrayOfId([...arrayOfId,id]);
                     IddOfQuestions.push(idd);
@@ -233,6 +293,7 @@ const [checkCreate,setcheckCreate]=useState(true);
      function SaveHandler()
      {
         // firebaseDb.child(`QuestionsSet/${selectedId}`).push(quesData);
+        setCheckboxArray([]);
         setarrayOfId([]);
         setOpened("");
         console.log("save " + quesData);
@@ -256,7 +317,9 @@ const [checkCreate,setcheckCreate]=useState(true);
 
      function createCheckHandler2()
      {
-        setcheckCreate(false); 
+        setNamesArray([]);
+        setCheckboxArray([]);
+        setcheckCreate(false);
      }
 
     
@@ -342,41 +405,73 @@ const [checkCreate,setcheckCreate]=useState(true);
 
     function OnClickCheckBox(id,idd)
     {
-        var x = ArrayOfIds.toString();
-        console.log("ARRAY IS " + x);
-        if(ArrayOfIds.includes(id))
-        {
-            console.log("PRESENT");
-            const index = ArrayOfIds.indexOf(id);
-            if (index > -1) {
-            ArrayOfIds.splice(index, 1);
+       console.log("CheckBoxArray Of Id "+CheckboxArray );
+       console.log("idididi");
+       console.log(quesData);
+       console.log("BHAVYA");
+        console.log(" ");
+        if(arrayOfId.includes(id)){
+            console.log("CHECKBOX IS PRESENT 33");
+
+            const index2 = arrayOfId.indexOf(id);
+            if (index2 > -1) {
+                arrayOfId.splice(index2, 1);
              }
-             delete quesData[idd];
-        }else{
-            console.log("NOT");
+
+                }else{
+                     arrayOfId.push(id);
+                    console.log("CHECKBOX IS ABSENT 22");
+                }
+
+        if(CheckboxArray.includes(id))
+        {
+
+            console.log("IN THIS ID IS PRESENT");
+            const index = CheckboxArray.indexOf(id);
+            if (index > -1) {
+                CheckboxArray.splice(index, 1);
+             }
+
+             var deletedIndex=null;
+
+             Object.keys(quesData).map((ab,quesCount)=>{
+
+                   if(quesData[ab].id===id)
+                {
+                    deletedIndex=ab;
+                }
+
+          })
+
+          quesData.splice(deletedIndex,1);
+
+
+        }else {
+            console.log("IN THIS ID IS NOT PRESENT");
+            CheckboxArray.push(id);
             ArrayOfIds.push(id);
             addDataToFireBase(id,idd);
             console.log("ID OF NOTLOOP "+id);
             console.log("length is "+Object.keys(quesData).length);
 
             // delete quesData.[ab];
-              Object.keys(quesData).map((ab,quesCount)=>{
-                  console.log("plplplplplpl");
-                  console.log("ID is"+quesData[ab].id);
-                  console.log("question "+quesData[ab].question);
-                  console.log("ID OF LOOP "+ab);
-                //   delete (quesData.(ab));
-                //   delete quesData[ab].id;
-                // delete quesData[ab].question;
-                // delete quesData[ab].isMandatory;
-                // delete quesData[ab].type;
-            })
+
         }
+
+        console.log("STATE ARRAY IS ");
+        console.log(CheckboxArray);
+        console.log("STATE ARRAY IS ");
+        console.log("QUES DATA IS ");
+        console.log(quesData);
+        console.log("QUES DATA IS ");
+
     }
+
   
 
     function addDataToFireBase(id,idd)
     {
+
        console.log( (pageData[idd])[id].question);
        console.log(id);
        setQuesData([
@@ -385,10 +480,10 @@ const [checkCreate,setcheckCreate]=useState(true);
         id: id,
         isMandatory: (pageData[idd])[id].isMandatory,
         question:(pageData[idd])[id].question,
-        type : (pageData[idd])[id].type 
+        type : (pageData[idd])[id].type
           }
 
-       ]);  
+       ]);
     }
   
     var countOfquestion=0;
@@ -418,7 +513,7 @@ const [checkCreate,setcheckCreate]=useState(true);
     
     return (
         <>
-        <div className="shade-main2"></div>
+        <div className="shade-main"></div>
         <div>
         <div className="questionPopup">
        
@@ -469,8 +564,8 @@ const [checkCreate,setcheckCreate]=useState(true);
         
              <p className="PAGETITLE">  {t('PAGE_TITLE')} {pageCount+1} 
              {/* {opened===idd? <i id="dropAngle" class="fa fa-angle-up"/> :<i id="dropAngle"  class="fa fa-angle-down"/> } */}
-             {(opened===idd || opened===secondIdd)  ? <i id="dropAngle" class="fa fa-angle-up"/> :<i id="dropAngle"
-               class="fa fa-angle-down"/> }
+             {(opened===idd || opened===secondIdd)  ? <i id="dropAngle" className="fa fa-angle-up"/> :<i id="dropAngle"
+               className="fa fa-angle-down"/> }
              &nbsp; </p>
 
     
@@ -494,21 +589,23 @@ const [checkCreate,setcheckCreate]=useState(true);
 
                      
 
-//checked={IdOfQuestions.includes(id) ? true : false }
+                        //checked={IdOfQuestions.includes(id) ? true : false }
 
 
-                      console.log("pageCount is " + pageCount + " count is " + count);
+                      {/* console.log("pageCount is " + pageCount + " count is " + count); */}
 
                         return(
                              <div key={id} >
                             <div className="Pquestion" >
                            
                             
-                            { arrayOfId.includes(id) ? <p ><input onClick={()=> addDataToFireBase(id,idd)}  className="PBox"  type="checkbox"
-                                 checked="true"
+                            { arrayOfId.includes(id) ? <p >
+                            <input onClick={()=> addDataToFireBase(id,idd)}  className="PBox"  type="checkbox"
+                                 defaultChecked
                             />    
                          {count+1}. &nbsp; {(pageData[idd])[id].question} </p> :
-                         <p ><input onClick={()=> addDataToFireBase(id,idd)}  className="PBox"  type="checkbox"
+                         <p >
+                         <input onClick={()=> addDataToFireBase(id,idd)}  className="PBox"  type="checkbox"
                             />    
                          {count+1}. &nbsp; {(pageData[idd])[id].question} </p>}                       
                         

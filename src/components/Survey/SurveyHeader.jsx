@@ -71,13 +71,13 @@ function SurveyHeader(props) {
     //         alert("Please select the display type");
     //     }
 
-    axios.post("http://localhost:3001/",props.title)
-    .then(response =>{
-        console.log(response)
-    })
-    .catch(error =>{
-        console.log(error.response)
-    })
+    // axios.post("http://localhost:3001/",props.title)
+    // .then(response =>{
+    //     console.log(response)
+    // })
+    // .catch(error =>{
+    //     console.log(error.response)
+    // })
 
         firebaseDb.child("definitionData").set(
             {
@@ -100,7 +100,7 @@ function SurveyHeader(props) {
         console.log("Survey Defintion data added to firebase");
     }
 
-    
+
     return (
         <div className="survey-header">
              {/*<p> {t('SURVEY')} &nbsp;

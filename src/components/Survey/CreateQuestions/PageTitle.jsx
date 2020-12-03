@@ -21,7 +21,7 @@ import ImportQuestions from "./importQuestions";
 // import EmptyPage from "./EmptyPage"
 import Confirm from "./Confirm";
 import "./Confirm.css";
-
+import QuesBranching from "./QuesBranching";
 
 
 function PageTitle(props) {
@@ -33,8 +33,9 @@ function PageTitle(props) {
     const [opened,setOpened]=useState("");
     const [checkd,setCheckd]=useState(false);
     const [checked,setChecked]=useState(false);
+    const [quesBranchingChecked,setQuesBranchingChecked]=useState(false);
     const [selectedId,setSelectedId] =useState("");
-    const [selectedIdd,setSelectedIdd] =useState("1");
+    const [selectedIdd,setSelectedIdd] =useState("");
     const [pageName,setPageName]=useState("");
     const [pageCount,setPageCount]=useState(0);
     const [pageData,setPageData]=useState({});
@@ -46,7 +47,7 @@ function PageTitle(props) {
                     "isMandatory" : "",
                     "question" : "",
                     "type" : "",
-                    "undefined" : ""
+                    "undefined" : "",
                                         }
                     }                           
 
@@ -100,13 +101,17 @@ function PageTitle(props) {
         }else{
             setOpened("")
         }
-    
     }
     function handleCheck(){
         setCheckd(!checkd);
+        setSelectedId("");
     }
     function handleCheck2(){
          setChecked(!checked);
+         setSelectedId("");
+     }
+     function handleQuesBranchingCheck(){
+        setQuesBranchingChecked(!quesBranchingChecked);
      }
     //  function handlePage(event){
     //     setPageName(event.target.value);
@@ -170,7 +175,7 @@ function PageTitle(props) {
     function handleDelete(idd,id){
         console.log("delete called");
         console.log(idd);
-        console.log(id); 
+        console.log(id);
 
         // if(window.confirm("Are you sure you want to delete this question?")){
         //     firebaseDb.child(`pagis/${idd}/${id}`).remove(
@@ -271,6 +276,18 @@ function PageTitle(props) {
             )
     }
 
+    function handleQuesBranchingChecked(event,idd,id){
+        event.preventDefault();
+        setQuesBranchingChecked(!quesBranchingChecked);
+        setSelectedIdd(idd);
+        setSelectedId(id);
+        console.log(idd+" : "+ id);
+    }
+
+    function handleLogic(){
+
+    }
+
     // console.log({main});
     console.log({pageData});
     
@@ -286,9 +303,10 @@ function PageTitle(props) {
              &nbsp;
              <p className="page-title">{t('PAGE_TITLE')} </p>
            </p>
-           <p className="page-title2" > 0 {t('NO_OF_QUESTIONS')}</p>
- 
-           <section className="blue-section">
+           {props.showQuestions? <p className="page-title2" > 0 {t('NO_OF_QUESTIONS')}</p>
+           : null }
+           
+           <section style={{marginTop:"-0em"}} className="blue-section">
                 <input checked={checkd} onChange={handleCheck}
                 type="checkbox" name="check" className="checkbox" id="check"/> 
                 <label className="checkbox-label" htmlFor="check">
@@ -350,12 +368,14 @@ function PageTitle(props) {
              <p className="page-title">{t('PAGE_TITLE')} {pageCount+1} </p>
              
            </p>
-           <p className="page-title2" > {Object.keys(pageData[idd]).length} {t('NO_OF_QUESTIONS')}</p>
+           {props.showQuestions 
+            ?   <p className="page-title2" > {Object.keys(pageData[idd]).length} {t('NO_OF_QUESTIONS')}</p>
+            : null}
 
             {opened===idd? 
            <section className="blue-section">
                 <input checked={checkd} onChange={handleCheck}
-                type="checkbox" name="check" className="checkbox" id="check"/> 
+                type="checkbox" name="check" className="checkbox" id="check"/>
                 <label className="checkbox-label" htmlFor="check">
                     <p className="popup" id="toggle-checkbox" href=""> {t('ADD_QUESTION')}</p>
                     {checkd?<i className="fas fa-times" id="cancel-icon"></i> :null
@@ -368,23 +388,27 @@ function PageTitle(props) {
                     <p className="popup" id="toggle-checkbox" href=""> {t('IMPORT_QUESTION')}</p>
                     {checked?<i className="fas fa-times" id="cancel-icon"></i> :null
                     }
-                 </label>  
+                 </label>
 
                 {/* <a className="a" href=""> {t('IMPORT_QUESTION')}</a> */}
-                <a style={{margin:"0", padding:"0" }} 
+                <a style={{margin:"0", padding:"0" }}
                 // className="a" 
                 href=""> <QuestionBranchingHeader />
                 {t('QUESTION_BRANCHING')}</a>
+                {/* {quesBranchingChecked? 
+            <> <i style={{right:"15.5%", top:"8.5%"}} onClick={handleQuesBranchingChecked} className="fas fa-times" id="cancel-icon"></i> </> 
+            : null} */}
             </section>
             : null}
-            <a className="a"  onClick={(event) => handlePageCopy(idd,event)} href=""> <Duplicate /></a> 
-            <a className="a" 
+            <a className="a"  onClick={(event) => handlePageCopy(idd,event)} href=""> <Duplicate /></a>
+            <a className="a"
             style={{display:"inline" ,padding:"0.6em", margin:"0", marginRight:"1em"}}
             // onClick={(event) => handlePageDelete(idd,event)} href=""
             > 
             {/* <Deleteg /> */}
             <Confirm handlePageDelete={handlePageDelete} idd={idd} id=""
             setConfirmDelete={setConfirmDelete} ask="Are you sure you want to delete this page?" info="This will delete the selected page permanently" />
+            
             </a>
         </div>
         {opened===idd?
@@ -432,13 +456,17 @@ function PageTitle(props) {
                                 :
                             <div key={id} className="rendered">
                             <div className="rendered-data">
-                                <p className="p1" > {count+1}. &nbsp; {(pageData[idd])[id].question} </p>
+                                <p className="p1" > 
+                                {props.showQuestions?  <>{count+1}.</>  
+                                : null }  
+                                &nbsp; {(pageData[idd])[id].question} </p>
                                 <p className="p2">{(pageData[idd])[id].type}</p>
                             </div>
 
                             <div className="rendered-buttons">
                                 <a onClick={() => handleEdit(idd,id)}><Edit /> </a>
-                                <a ><QuestionBranching /></a>
+                                <a onClick={(e)=> handleQuesBranchingChecked(e,idd,id)}> <QuestionBranching />
+                                </a>
                                 <a onClick={(event) => handleQuesCopy(idd,id,event)}><Duplicate /></a>
                                 <a className="a"
                                 // style={{display:"inline" ,padding:".5em", margin:"0.5em", paddingTop:".5em", marginTop:".5em"}}
@@ -478,13 +506,15 @@ function PageTitle(props) {
             }
             {checked?<ImportQuestions  handleCheck2={handleCheck2} className="popup"/> :null
             }
+            {quesBranchingChecked? 
+            <> <QuesBranching handleQuesBranchingCheck={handleQuesBranchingCheck} handleLogic={handleLogic} pageData={pageData} selectedIdd={selectedIdd} selectedId={selectedId} /> 
+            <i style={{right:"16%", top:"10%"}} onClick={() => setQuesBranchingChecked(!quesBranchingChecked)}  className="fas fa-times" id="cancel-icon"></i> </>
+            : null}
             
         </div>
                 )
             })
             
-            
-
         }
         {props.display==="display3" || Object.keys(pageData).length>1  ? <button onClick={addNewPage} className="addPage"> {t('ADD_PAGE')}</button> : 
             null

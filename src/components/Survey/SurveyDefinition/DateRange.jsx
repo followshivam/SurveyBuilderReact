@@ -7,6 +7,7 @@ import 'react-nice-dates/build/style.css'
 function DateRangePickerExample() {
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
+  
   return (
     <DateRangePicker
       startDate={startDate}

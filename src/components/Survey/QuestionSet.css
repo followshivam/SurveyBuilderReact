@@ -35,7 +35,7 @@
     /* margin-bottom: 8px; */
     display: inline;
     /* font-family: OpenSans-Semibold; */
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
 font-size: 13px;
 color: #0072C6;
 text-align: left;
@@ -63,7 +63,7 @@ text-align: left;
     margin-top: 14px;
     margin-bottom: 8px;
     /* font-family: OpenSans-Semibold; */
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
 font-size: 12px;
 color: #5A5A5A;
 
@@ -87,7 +87,7 @@ border-radius: 2px;
     /* font-family: OpenSans-Semibold; */
 font-size: 13px;
 color: #5A5A5A;
-font-family: Arial, Helvetica, sans-serif;
+/* font-family: Arial, Helvetica, sans-serif; */
 }
 
 .searchInput2{
@@ -166,7 +166,7 @@ font-size: 109%;
 }
 
 .Pquestion{
-    font-family: OpenSans;
+    font-family: 'Open Sans' !important;
 font-size: 12px;
 color: #3A3A3A;
 }
@@ -183,7 +183,7 @@ color: #3A3A3A;
 
 .PAGETITLE{
     /* font-family: OpenSans; */
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
 font-size: 15px;
 color: #5A5A5A;
 letter-spacing: 0;

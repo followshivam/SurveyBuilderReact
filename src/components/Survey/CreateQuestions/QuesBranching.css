@@ -1,0 +1,97 @@
+ #cancel-icon{
+    position: absolute;
+    top:1em;
+    right:33%;
+    font-size:1.5em;
+    z-index: 7;
+    cursor:pointer;
+    color:#424242;
+  }
+.branching-main{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 5;
+    left:15%;
+    top:8%;
+    height:80%;
+    width:70%;
+    background: #EBEBEB;
+    background: #FFFFFF;
+    border: 1px solid #979797;
+}
+.branching-main-header{
+    padding:1.5em;
+    border-bottom:1px solid #DCDCDC;
+    font-weight: 600;
+    font-size: 12px;
+    color: #0072C6;
+    /* text-align: left; */
+}
+
+.branching-if-p{
+    padding: 0em 1.5em;
+    font-size: 12px;
+    color: #202020;
+    margin:.5em;
+}
+.branching-if-p span{
+    font-weight: 600;
+    font-size: 12px;
+    color: #0E0E0E;
+    line-height: 17px;
+}
+.branching-main .select-option{
+    background: #F6F6F8;
+    padding: 1.2em;
+    /* height:56px; */
+}
+.branching-main select{
+    background: #FFFFFF;
+    border: 1px solid #C4C4C4;
+    border-radius: 2px;
+    border-radius: 2px;
+    margin-top: 1em;
+    /* margin:1em 1.5em; */
+}
+select.select-answer{
+    width:12.9%;
+}
+select.select-question{
+    width:45%
+}
+.branching-main .cancel-button{
+    font-weight: 600;
+    font-size: 12px;
+    color: #000000;
+    line-height: 22px;
+}
+.branching-main .save-button{
+    font-weight: 600;
+    font-size: 12px;
+    color: #FFFFFF;
+    line-height: 22px;
+}
+/* cancel save buttons */
+.saveCancelBtn{
+    position: absolute;
+    bottom:1em;
+    right:1em;
+}
+.saveCancelBtn button{
+    margin: 1em;
+    padding:0.5em;
+    height:3em;
+    width:5em;
+    font-weight: 600;
+}
+.saveCancelBtn .cancel-button{
+    border: 1px solid #979797;
+    border-radius: 2px;
+    color:black;
+}
+.saveCancelBtn .save-button{
+    background: #0072C6;
+    border:none;
+    color: #FFFFFF;
+}

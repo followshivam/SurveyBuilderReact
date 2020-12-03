@@ -2,6 +2,10 @@ import React,{useState, useEffect} from 'react'
 import Select from '@material-ui/core/Select';
 import "./EditQuestion2.css";
 import { useTranslation } from 'react-i18next';
+import Deleteg from "../../../iconComponents/Deleteg.tsx";
+import Edit from "../../../iconComponents/Edit.tsx";
+import { uuid } from 'uuidv4';
+
 
 function EditQuestion2(props) {
     
@@ -18,6 +22,10 @@ function EditQuestion2(props) {
     const [valueCheck, setValueCheck] = useState(false);
     const [scoringCheck, setScoringCheck] = useState(false);
     const [rowAdded, setRowAdded] = useState(false);
+    const [optionsUpdateAdd,setOptionsUpdateAdd]=useState({
+        action:"",
+        updateId:""
+    });
 
     const [option,setOption]=useState({
         name:"",
@@ -31,7 +39,8 @@ function EditQuestion2(props) {
         id:"",
         type:"",
         scoring:"",
-        options:{}
+        options:{},
+        logic:[]
     }
 
     const [quesData, setQuesData]=useState(initialValues);
@@ -45,6 +54,10 @@ function EditQuestion2(props) {
         {
             setQuesData({
                 ...(props.pageData[props.selectedIdd])[props.selectedId]
+            });
+            
+        setOptions({
+            ...(props.pageData[props.selectedIdd])[props.selectedId].options
             });
             
         }
@@ -102,8 +115,6 @@ function handleValue(){
     }
 }
 function handleScoring(){
-
-    
         setValidity(false);
         setAnswerType(false);
         setOptionCheck(false);
@@ -152,43 +163,103 @@ function handleScoring(){
     function handleOptions(event){
         event.preventDefault();
         console.log("handle options called:",option.score);
-        setRowAdded(false);
-        if(option.name.length===0){
-            console.log("name: ",option.name.length);
-            handleOptionName();
-           return;
-        }
-        else if(option.value.length===0){
-            console.log("value: ",option.value.length);
-            setOptionCheck(false);
-            handleValue();
-            return;
-        }
-        else if(scoring && option.score<=0){
-            console.log("Score: ");
-            setValueCheck(false);
-            handleScoring();
-            return;
-        }
-        setValueCheck(false);
-        setScoringCheck(false);
-        setRowAdded(false);
-        
-        console.log("yes");
+        // setRowAdded(false);
+        // if(option.name.length===0){
+        //     console.log("name: ",option.name.length);
+        //     handleOptionName();
+        //    return;
+        // }
+        // else if(option.value.length===0){
+        //     console.log("value: ",option.value.length);
+        //     setOptionCheck(false);
+        //     handleValue();
+        //     return;
+        // }
+        // else if(scoring && option.score<=0){
+        //     console.log("Score: ");
+        //     setValueCheck(false);
+        //     handleScoring();
+        //     return;
+        // }
+        if(optionsUpdateAdd.action==="update"){
+            
+            setOptions((prev)=>{
+                return{
+                    ...prev,[optionsUpdateAdd.updateId]:{
+                        "name":option.name,
+                        "value":option.value,
+                        "score":option.score
+                    }
+                     }});
 
+            // delete options[optionsUpdateAdd.updateId];
+
+            setQuesData((prev)=>{
+                return{
+                ...prev, options:{
+                    ...prev.options, [optionsUpdateAdd.updateId]:{
+                    "name":option.name,
+                    "value":option.value,
+                    "score":option.score}
+            }}});
+        }
+        // setValueCheck(false);
+        // setScoringCheck(false);
+        // setRowAdded(false);
+        
+        // console.log("yes");
+        else{
+        const newId=uuid();
         setOptions((prev)=>{
             return{
-                ...prev,[option.name]:{"value":option.value,
-        "score":option.score}
+                ...prev,[newId]:{
+                    "name":option.name,
+                    "value":option.value,
+                    "score":option.score
+                }
                  }});
+                 setQuesData((prev)=>{
+                    return{
+                    ...prev, options:{
+                        ...prev.options, [newId]:{
+                        "name":option.name,
+                        "value":option.value,
+                        "score":option.score}
+                }}});
+            }
+                
+        setOption({
+                "name":"",
+                "value":"",
+                "score":""
+        })
+    }
+
+    function handleOptionDelete(id){
+        console.log(id);
+        delete options[id];
+        console.log(options);
         setQuesData((prev)=>{
             return{
-            ...prev, options:{...prev.options, [option.name]:{"value":option.value,
-            "score":option.score}
-            // id:quesNo
-        }}})                 
+             ...prev, options:{...options
+        }}});
     }
-    
+
+    function handleOptionEdit(id){
+        console.log(id);
+        setOption({
+            "name":options[id].name,
+            "value":options[id].value,
+            "score":options[id].score
+        })
+        setOptionsUpdateAdd(()=>{
+            return{
+                "action":"update",
+                updateId:id
+            }
+        });
+    }
+
     function handleSave(event){
         event.preventDefault();
         var quesRegex = /^[0-9a-zA-Z%\.]+[0-9a-zA-Z\\s?\.]*/;
@@ -288,7 +359,7 @@ function handleScoring(){
             <option value="short">{t('SHORT_ANSWER')}</option>
             <option value="long">{t('LONG_ANSWER')}</option>
             <option value="date-time">{t('DATE_TIME')}</option>
-            </Select> <br/> <br/>
+        </Select> <br/> <br/>
             
             {quesData.type==="single-select" || quesData.type==="multi-select" ||quesData.type==="dropdown" ?
             <div>
@@ -302,10 +373,10 @@ function handleScoring(){
             {scoring? <p style={{marginLeft:"22%", display:"inline"}} > Scoring</p>: null} <br/>
                 
             {/* <form > */}
-                <input className="optionInput" required type="text" name="name" onChange={handleOption}/> 
-                <input className="valueInput" required type="text" name="value" onChange={handleOption}/>
+                <input className="optionInput" required type="text" name="name" value={option.name} onChange={handleOption}/> 
+                <input className="valueInput" required type="text" name="value" value={option.value} onChange={handleOption}/>
                 {scoring?
-                <input className="scoreInput" type="number" min="-2" max="4" placeholder="0" name="score" onChange={handleOption}/>
+                <input className="scoreInput" type="number" min="-2" max="4" placeholder="0" value={option.score} name="score" onChange={handleOption}/>
                  : null}
                 <button className="plusButton" onClick={handleOptions} type="submit" ><i class='fas fa-plus'></i></button> <br/> <br/>
 
@@ -325,10 +396,13 @@ function handleScoring(){
                 {Object.keys(options).map(id=>{
                     return(
                     <tr key={id}>
-                        <td className="optionsTD" style={{fontWeight:"lighter"}} > {id}</td>
+                        <td className="optionsTD" style={{fontWeight:"lighter"}} > {options[id].name}</td>
                         <td className="optionsTD" style={{fontWeight:"lighter"}}> {options[id].value}</td>
                         {scoring?
                         <td className="optionsTD" style={{fontWeight:"lighter"}}> {options[id].score}</td> :null}
+                        <div className="optionsTD" style={{}} onClick={() => handleOptionEdit(id)} > <Edit /></div>
+                        <div className="optionsTD" style={{}} onClick={() => handleOptionDelete(id)} > <Deleteg /></div>
+                        
                     </tr>
                     )
                 })}

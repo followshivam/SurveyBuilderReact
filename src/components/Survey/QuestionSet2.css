@@ -93,10 +93,10 @@ height: 32px;
 .TitleQuestion{
     display: inline;
     margin-left: 21%;
-    font-family: OpenSans;
+    font-family: 'Open Sans' !important;
 /* font-size: 12px; */
-font-size: 100%;
-color: #3E3E3E;
+    font-size: 100%;
+    color: #3E3E3E;
 }
 
 .questionSetTitle #cancel-icon{

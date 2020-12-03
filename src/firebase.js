@@ -1,13 +1,13 @@
 import firebase from "firebase";
 
 var firebaseConfig = {
-    apiKey: "AIzaSyDUKqBP0ox2jRhYFPM2gsH1qtcKcsngmqQ",
-    authDomain: "surveybuilder-ab47b.firebaseapp.com",
-    databaseURL: "https://surveybuilder-ab47b.firebaseio.com",
-    projectId: "surveybuilder-ab47b",
-    storageBucket: "surveybuilder-ab47b.appspot.com",
-    messagingSenderId: "291225973280",
-    appId: "1:291225973280:web:9336e4a7011f0ab0b20245"
+    apiKey: "AIzaSyCxamLjIcy6SgykRc2HMZcGqveaerefmbM",
+    authDomain: "newgensurvey.firebaseapp.com",
+    databaseURL: "https://newgensurvey.firebaseio.com",
+    projectId: "newgensurvey",
+    storageBucket: "newgensurvey.appspot.com",
+    messagingSenderId: "264660713982",
+    appId: "1:264660713982:web:d8f81350925baf5e6e40af"
   };
   // Initialize Firebase
   var fireDb=firebase.initializeApp(firebaseConfig);

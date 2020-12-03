@@ -2,7 +2,6 @@ import React,{useState, useEffect} from 'react';
 import "./Themes.css";
 import firebaseDb from "../../firebase";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { SketchPicker } from 'react-color';
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
@@ -18,14 +17,11 @@ import visual2 from "../../Images/visual2.png";
 import visual3 from "../../Images/visual3.png";
 import textColor from "../../Images/textColor.png";
 import backgroundColor from "../../Images/backgroundColor.png";
-import downloadTheme from "../../Images/downloadTheme.png";
-import uploadTheme from "../../Images/uploadTheme.png";
+
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import CheckIcon from '@material-ui/icons/Check';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import SvgDownloadThemes from "../../iconComponents/DownloadThemes.tsx";
-import SvgUploadThemes from "../../iconComponents/UploadThemes.tsx";
 
 const useStyles= makeStyles({
     labelStyle: {
@@ -62,16 +58,9 @@ const useStyles= makeStyles({
     },
     headingStyle:{
         fontSize:props => props.headingStyle.fontSize
-    },
-    root:{
-        margin:0,
-        padding:0,
-        display:"inline-block",
-    },
-    colorRoot:{
-        display:"absolute"
     }
-});    
+});
+    
 
 function Themes() {
     const [labelStyle,setLabelStyle]=useState({
@@ -114,7 +103,7 @@ function Themes() {
     
     const props = {
         labelStyle:{
-            fontSize: labelStyle.fontSize,
+            fontSize: labelStyle.fontSize, 
             color:labelStyle.color,
             textDecoration:labelStyle.textDecoration,
             fontStyle:labelStyle.fontStyle,
@@ -160,105 +149,7 @@ function Themes() {
     const [inputVariant,setInputVariant]=useState("outlined-out");
     const [singleDisplay, setSingleDisplay]=useState("dot");
     const [multiDisplay, setMultiDisplay]=useState("");
-
-    const [themeData,setThemeData]=useState({});
-    const [currentThemeId,setCurrentThemeId]=useState();
-
-    const [currentTheme,setCurrentTheme]=useState({
-        labelStyle:{
-            fontSize:labelStyle.fontSize,
-            color:labelStyle.color,
-            textDecoration:labelStyle.textDecoration,
-            fontStyle:labelStyle.fontStyle,
-            fontWeight:labelStyle.fontWeight,
-            fontFamily:labelStyle.fontFamily,
-            backgroundColor:labelStyle.backgroundColor 
-        },
-        inputStyle:{
-            fontSize:inputStyle.fontSize,
-            color:inputStyle.color,
-            textDecoration:inputStyle.textDecoration,
-            fontStyle:inputStyle.fontStyle,
-            fontWeight:inputStyle.fontWeight,
-            fontFamily:inputStyle.fontFamily,
-            marginRight:inputStyle.marginRight
-        },
-        themeStyle:{
-            backgroundColor:themeStyle.backgroundColor,
-            margin:themeStyle.margin,
-            padding:themeStyle.padding,
-            overflow:themeStyle.overflow
-        },
-        checkboxStyle:{
-            height:checkboxStyle.height,
-            width:checkboxStyle.width
-        },
-        optionsDisplay:{
-            display:optionsDisplay.display,
-        marginRight:optionsDisplay.marginRight
-        },
-        headingStyle:{
-            fontSize:headingStyle.fontSize
-        }
-    });
-    
-    const [defaultTheme,setDefaultTheme]=useState({
-        labelStyle:{
-            fontSize:12,
-            color:"#3A3A3A",
-            textDecoration:"",
-            fontStyle:"",
-            fontWeight:600,
-            fontFamily:"Open Sans",
-            backgroundColor:"white"
-        },
-        inputStyle:{
-            fontSize:12,
-            color:"#3A3A3A",
-            textDecoration:"",
-            fontStyle:"",
-            fontWeight:300,
-            fontFamily:"Open Sans",
-            marginRight:"2em"
-        },
-        themeStyle:{
-            backgroundColor:"#FFFFFF",
-            margin:"1em 6em 2em",
-            padding:".5em 2em 2em",
-            overflow: "scroll"
-        },
-        checkboxStyle:{
-            height:30,
-            width:30
-        },
-        optionsDisplay:{
-            display:"block",
-        marginRight:"0em"
-        },
-        headingStyle:{
-            fontSize:11
-        }
-    });
-    
     // const [optionsDisplay,setOptionsDisplay]=useState("vertical");
-    useEffect(()=>{
-        firebaseDb.child("themes").on("value",snapshot=>{
-            if(snapshot.val()!=null)
-            setThemeData({
-                ...snapshot.val()
-            })
-            else{
-               firebaseDb.child("themes").push(
-                {defaultTheme},
-            err=>{
-                if(err){
-                    console.log(err);
-                }
-            } )
-            }
-        })
-    }
-    ,[]);
 
     useEffect(()=>{
         firebaseDb.child("pagis").on("value",snapshot=>{
@@ -447,34 +338,34 @@ function Themes() {
     function increaseThemeSize(){
             setHeadingStyle((prev) => {
                 return{
-                    ...prev, fontSize:parseInt(headingStyle.fontSize)+1
+                    ...prev, fontSize:(headingStyle.fontSize)+1
                 }
             })
             setInputStyle((prev) => {
                 return{
-                    ...prev, fontSize:parseInt(inputStyle.fontSize)+1
+                    ...prev, fontSize:(inputStyle.fontSize)+1
                 }
             })
             setLabelStyle((prev) => {
                 return{
-                    ...prev, fontSize:parseInt(labelStyle.fontSize)+1
+                    ...prev, fontSize:(labelStyle.fontSize)+1
                 }
             })
     }
     function decreaseThemeSize(){
         setHeadingStyle((prev) => {
             return{
-                ...prev, fontSize:parseInt(headingStyle.fontSize)-1
+                ...prev, fontSize:(headingStyle.fontSize)-1
             }
         })
         setInputStyle((prev) => {
             return{
-                ...prev, fontSize:parseInt(inputStyle.fontSize)-1
+                ...prev, fontSize:(inputStyle.fontSize)-1
             }
         })
         setLabelStyle((prev) => {
             return{
-                ...prev, fontSize:parseInt(labelStyle.fontSize)-1
+                ...prev, fontSize:(labelStyle.fontSize)-1
             }
         })
     }
@@ -489,12 +380,10 @@ function Themes() {
                     // style={{fontSize:parseInt(labelFont), color:"red"}}
                     > Theme: </p>
                     <select name="" id="">
-                        <option value="">Default Theme</option>
+                        <option value="">survey</option>
                     </select>
-                    <a> <SvgDownloadThemes/> Download Theme</a>
-                    <a> <SvgUploadThemes/> Upload Theme </a>
-                    {/* <img src={downloadTheme} alt=""/> <img src={uploadTheme} alt=""/> */}
-                    
+                    <a> Download Theme</a>
+                    <a> Upload Theme</a>
                 </div>
 
                 <div className="theme-questions" >
@@ -526,14 +415,14 @@ function Themes() {
                                                         :[singleDisplay==="toggle"? `radio-container ${classes.inputStyle}` :classes.inputStyle ]  } >
                                                         <input type="radio" name={id} value={i} id={i} /> &nbsp;
                                                         <span className="checkmark"></span>
-                                                    {(pageData[idd])[id].options[i].name}
+                                                    {i}
                                                       </label>
 
                                                     :[ (pageData[idd])[id].type==="multi-select"
                                                     ? <label className={classes.inputStyle}  htmlFor={i}>
                                                     <input type="checkbox" className={multiDisplay==="lined" ? "checkboxStyles": "" } style={{height:"1.4em", width:"1.4em" }} name={i} value={i} id={i} /> &nbsp;
                                                     <span className="checkboxStyles-span"></span>
-                                                    {(pageData[idd])[id].options[i].name}
+                                                    {i}
                                                     </label>
                                                     : null]
                                                     }
@@ -567,14 +456,14 @@ function Themes() {
                     </div>       
                     
                     <div className="">
-                        
+
                     </div>
                 </div>
             </div>
             <div className="theme-main2">
                 <div className="theme-header2">
-                    <div className="theme-header2-sub1"> <p> Text Size</p> <a onClick={decreaseThemeSize}>-</a> <a onClick={increaseThemeSize}>+</a> </div> 
-                    <div className="theme-header2-sub2"> <p>Theme Color</p> <label htmlFor="theme-color"></label>
+                    <div className="theme-header2-sub1"> <p> Text Size</p> <button className="MinusButton"  onClick={decreaseThemeSize}>-</button> <button  onClick={increaseThemeSize}>+</button> </div> 
+                    <div className="theme-header2-sub2"> <p className="ThemeColor" >Theme Color</p> <label htmlFor="theme-color"></label> 
                     <a onClick={()=> setShowThemeColor(!showThemeColor)}> 
                         {showThemeColor? <SketchPicker 
                             color={themeStyle.backgroundColor}
@@ -583,18 +472,18 @@ function Themes() {
                         : <img src={backgroundColor} alt=""/> } </a>
                     </div>
                 </div>
-                <div className="theme-body">
-                    <p >Detailed Configuration</p>
+                <div className="theme-body">    
+                    <p className="DetailedConfiguration">Detailed Configuration</p>
                     <div className="theme-style-main">
-                        <div className="theme-style-sub1" > <a href="">Form</a> <a href="">Questionnaire</a> </div>
+                        <div className="theme-style-sub1" > <a href="">Form</a> <a className="Questionnaire" href="">Questionnaire</a> </div>
                         <div className="theme-style-sub2" >
-                        <h4>Questionnaire</h4>
+                        <h4 className="LeftShift">Questionnaire</h4>
 
                         {/* Label Field  */}
                         <div>
-                        <h5> Input Field Label</h5>
-                        <p> Font Style</p>
-                        <select name="fontFamily" id="fontFamily" onChange={handleLabelTextStyle}>
+                        <h5 className="LeftShift"> Input Field Label</h5>
+                        <p className="FontStyle1"> Font Style</p>
+                        <select className="LabelfontFamilyOptions1" name="fontFamily" id="fontFamily" onChange={handleLabelTextStyle}>
                             <option value="Open Sans">Open Sans</option>
                             <option value="Goldman">Goldman</option>
                             <option value="Poppins">Poppins</option>
@@ -602,7 +491,7 @@ function Themes() {
                             <option value="Ubuntu">Ubuntu</option>
                             <option value="Montserrat">Montserrat</option>
                         </select>
-                        <input type="number" min="8" max="20" placeholder="10" step="1" value={labelStyle.fontSize} name="fontSize" onChange={(event) => handleLabelTextStyle(event)} />
+                        <input className="InputfontSize1" type="number" min="8" max="20" placeholder="10" step="1" value={labelStyle.fontSize} name="fontSize" onChange={(event) => handleLabelTextStyle(event)} />
                         {/* <input type="color"/> */}
                         <a onClick={()=> setShowLabelColor(!showLabelColor)}> 
                         {showLabelColor? <SketchPicker
@@ -615,28 +504,29 @@ function Themes() {
                             onChange={updatedColor=> handleLabelTextColor(updatedColor)}
 
                         /> */}
-                        <select name="textStyle" id="textStyle" onChange={handleLabelTextStyle} >
+                        <br></br>
+                        <select className="TextStyle1" name="textStyle" id="textStyle" onChange={handleLabelTextStyle} >
                             <option value="none">None</option>
                             <option value="bolder">Bold</option>
                             <option value="italic">Italic</option>
                             <option value="italic-bolder">Italic-Bold</option>
                             <option value="underline">Underline</option>
                         </select>
-                        <p>Background</p>
+                        <p className="LeftShift">Background</p>
                         <a onClick={()=> setShowBackgroundColor(!showBackgroundColor)}> 
                         {showBackgroundColor? <SketchPicker 
                             color={labelStyle.backgroundColor}
                             onChange={updatedColor=> handleBackgroundColor(updatedColor)}
                         />
-                        : <img src={backgroundColor} alt=""/> } </a>
+                        : <img className="Image1" src={backgroundColor} alt=""/> } </a>
                         {/* <input type="color"/>     */}
                         </div>
 
                         {/* Input style */}
                         <div>
-                            <h5> Input Style</h5>
-                            <p> Font Style</p>
-                        <select name="fontFamily" id="fontFamily" onChange={handleInputTextStyle}>
+                            <h5 className="LeftShift"> Input Style</h5>
+                            <p className="FontStyle2"> Font Style</p>
+                        <select className="LabelfontFamilyOptions2" name="fontFamily" id="fontFamily" onChange={handleInputTextStyle}>
                             <option value="Open Sans">Open Sans</option>
                             <option value="Goldman">Goldman</option>
                             <option value="Poppins">Poppins</option>
@@ -644,15 +534,16 @@ function Themes() {
                             <option value="Ubuntu">Ubuntu</option>
                             <option value="Montserrat">Montserrat</option>
                         </select>
-                        <input type="number" min="8" max="20" placeholder="10" step="1" value={inputStyle.fontSize} name="fontSize" onChange={(event) => handleInputTextStyle(event)} />
+                        <input className="InputfontSize2" type="number" min="8" max="20" placeholder="10" step="1" value={inputStyle.fontSize} name="fontSize" onChange={(event) => handleInputTextStyle(event)} />
                         <a onClick={()=> setShowInputColor(!showInputColor)}> 
                         {showInputColor? <SketchPicker 
                             color={inputStyle.color}
                             onChange={updatedColor=> handleInputTextColor(updatedColor)}
                         />
                         : <img src={textColor} alt=""/> } </a>
+                        <br></br>
                         {/* <input type="color"/> */}
-                        <select name="textStyle" id="textStyle" onChange={handleInputTextStyle} >
+                        <select className="TextStyle2" name="textStyle" id="textStyle" onChange={handleInputTextStyle} >
                             <option value="none">None</option>
                             <option value="bolder">Bold</option>
                             <option value="italic">Italic</option>
@@ -662,99 +553,110 @@ function Themes() {
                         </div>
 
                         {/* Answer Style     */}
-                        <div className="answer-style">
-                         <h5>Answer Style</h5> 
-                        <p>
+                        <div>
+                         <h5 className="LeftShift">Answer Style</h5> 
+                        <p className="LeftShift">
                         Multiple Choice(Single Select)
                         </p>
-                        <ToggleButtonGroup className={classes.root} value={singleDisplay} exclusive onChange={handleSingleDisplay} aria-label="singleDisplay" >
-                            <ToggleButton className={classes.root} value="dot" aria-label="dot">
+                        <ToggleButtonGroup value={singleDisplay} exclusive onChange={handleSingleDisplay} aria-label="singleDisplay" >
+                            <ToggleButton className="singleDot" value="dot" aria-label="dot">
                                 <img src={single1} value="single1" name="single"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="filled" aria-label="filled">
+                            <ToggleButton className="singleFilled" value="filled" aria-label="filled">
                                 <img src={single2} value="single2" name="single"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="toggle" aria-label="toggle">
+                            </ToggleButtonGroup>
+                            <br></br>
+                            <ToggleButtonGroup value={singleDisplay} exclusive onChange={handleSingleDisplay} aria-label="singleDisplay" >
+                            <ToggleButton className="singleToggle"  value="toggle" aria-label="toggle">
                                 <img src={single3} value="single3" name="single"/>
                             </ToggleButton>
-                        </ToggleButtonGroup>
-                        
-                        <p>Multiple Choice(Multi Select)</p>
-                        <ToggleButtonGroup className={classes.root} value={multiDisplay} exclusive onChange={handleMultiDisplay} aria-label="multiDisplay" >
-                            <ToggleButton className={classes.root} value="lined" aria-label="lined">
+                            </ToggleButtonGroup>
+    
+
+                        <p className="LeftShift">Multiple Choice(Multi Select)</p>
+                        <ToggleButtonGroup value={multiDisplay} exclusive onChange={handleMultiDisplay} aria-label="multiDisplay" >
+                            <ToggleButton className="multiLined"  value="lined" aria-label="lined">
                                 <img src={multi1} value="lined" name="lined"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="filled" aria-label="filled">
+                            <ToggleButton className="multiFilled" value="filled" aria-label="filled">
                                 <img src={multi2} value="filled" name="filled"/>
                             </ToggleButton>
                         </ToggleButtonGroup>
                         
-                        <p>Multiple Choice Display Type</p>
-                        <ToggleButtonGroup className={classes.root} value={optionsDisplay} exclusive onChange={handleOptionsDisplay} aria-label="displayDirection">
-                            <ToggleButton className={classes.root} value="vertical" aria-label="vertical">
+                        <p className="LeftShift">Multiple Choice Display Type</p>
+                        <ToggleButtonGroup value={optionsDisplay} exclusive onChange={handleOptionsDisplay} aria-label="displayDirection">
+                            <ToggleButton className="multiVertical" value="vertical" aria-label="vertical">
                                 <img src={vertical} value="vertical" name="displayDirection"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="horizontal" aria-label="horizontal">
+                            <ToggleButton className="multiHorizontal" value="horizontal" aria-label="horizontal">
                                 <img src={horizontal} value="horizontal" name="displayDirection"/>
                             </ToggleButton>
                         </ToggleButtonGroup>
                         
                         
-                        <p>Short Answer</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
+                        <p className="LeftShift">Short Answer</p>
+                        <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
+                            <ToggleButton className="ShortAnswer1" value="outlined-out" aria-label="outlined-out">
                                 <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
+                            <ToggleButton className="ShortAnswer2" value="standard" aria-label="standard">
                                 <img alt="displayType" src={visual2} value="standard" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
+                            </ToggleButtonGroup>
+                            <br></br>
+                            <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
+                            <ToggleButton className="ShortAnswer3" value="outlined-in" aria-label="right aligned">
                                 <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
                             </ToggleButton>
                         </ToggleButtonGroup>
-                        <p>Long Answer</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
+
+                        <p className="LeftShift">Long Answer</p>
+                        <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
+                            <ToggleButton className="LongAnswer1"  value="outlined-out" aria-label="outlined-out">
                                 <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
+                            <ToggleButton className="LongAnswer2"  value="standard" aria-label="standard">
                                 <img alt="displayType" src={visual2} value="standard" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
+                            </ToggleButtonGroup>
+                            <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
+                            <ToggleButton className="LongAnswer3" value="outlined-in" aria-label="right aligned">
                                 <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
                             </ToggleButton>
                         </ToggleButtonGroup>
-                        <p>Dropdown</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
+
+                        <p className="LeftShift">Dropdown</p>
+                        <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
+                            <ToggleButton className="Dropdown1" value="outlined-out" aria-label="outlined-out">
                                 <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
+                            <ToggleButton className="Dropdown2" value="standard" aria-label="standard">
                                 <img alt="displayType" src={visual2} value="standard" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
+                            </ToggleButtonGroup>
+                            <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
+                            <ToggleButton className="Dropdown3" value="outlined-in" aria-label="right aligned">
                                 <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
                             </ToggleButton>
                         </ToggleButtonGroup>
-                        <p>Datepicker</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType">
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
+
+                        <p className="LeftShift">Datepicker</p>
+                        <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType">
+                            <ToggleButton className="Datepicker1" value="outlined-out" aria-label="outlined-out">
                                 <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
+                            <ToggleButton className="Datepicker2" value="standard" aria-label="standard">
                                 <img alt="displayType"  src={visual2} value="standard" name="displayType"/>
                             </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
+                            </ToggleButtonGroup>
+                            <ToggleButtonGroup value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType">
+                            <ToggleButton className="Datepicker3" value="outlined-in" aria-label="right aligned">
                                 <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
                             </ToggleButton>
                         </ToggleButtonGroup>
                         </div>    
                         </div>
-                    </div>
-                    <div className="button-group">
-                            <button className="apply">Apply</button>
-                            <button className="save">Save</button>
-                            <button className="save-as">Save As</button>
                     </div>        
                 </div>
             </div>
