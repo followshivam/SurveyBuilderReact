@@ -9,7 +9,8 @@ import SvgSave from "../../iconComponents/Save.tsx";
 import SvgSettings from "../../iconComponents/Settings.tsx";
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axios";
 
 function SurveyHeader(props) {
 
@@ -71,12 +72,20 @@ function SurveyHeader(props) {
     //         alert("Please select the display type");
     //     }
 
-    // axios.post("http://localhost:3001/",props.title)
+        axios.post("/addSurveyDef",props)
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error =>{
+            console.log(error);
+        } )
+
+    // axios.post("http://127.0.0.1:8080/survey/",props)
     // .then(response =>{
     //     console.log(response)
     // })
     // .catch(error =>{
-    //     console.log(error.response)
+    //     console.log(error)
     // })
 
         firebaseDb.child("definitionData").set(
@@ -88,7 +97,8 @@ function SurveyHeader(props) {
                 logo:props.logo,
                 display:props.display,
                 showProgress:props.showProgress,
-                showQuestions:props.showQuestions
+                showQuestions:props.showQuestions,
+                surveyDetails:props.surveyDetails
               }
               ,
             err=>{
@@ -100,6 +110,26 @@ function SurveyHeader(props) {
         console.log("Survey Defintion data added to firebase");
     }
 
+    const surveyExecutor={
+        "surveyId":"1234",
+        "createdBy":"User_Shivam"
+    };
+
+    function openPreviewInNewTab(){
+        window.open('/preview','Data','height=1200,width=900,left=450');
+        console.log(props.surveyDetails);
+
+        axios.post("/surveyPreviewExecutor",surveyExecutor)
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error =>{
+            console.log(error);
+        } )
+
+        console.log("successfully called survey executor");
+        
+      }
 
     return (
         <div className="survey-header">
@@ -113,10 +143,10 @@ function SurveyHeader(props) {
                 <div className="survey-sub">
                     <p className="survey-title">
                     {props.title===""? t('SURVEY_TITLE') : props.title}
-                    
                     </p>
                 </div>
-                <p> <SvgSettings /> &nbsp; {t('SETTINGS')}</p>
+                {/* <p> <SvgSettings /> &nbsp; {t('SETTINGS')}</p> */}
+                <p onClick={openPreviewInNewTab} className="saveDef-button"> Preview </p>
                 <p onClick={handleSave} className="saveDef-button" > <SvgSave/> &nbsp; {t('SAVE')}</p>
                 
             </div>
@@ -132,7 +162,8 @@ function mapStateToProps(state){
       logo:state.surveyInfo.logo,
       display:state.surveyInfo.display,
       showProgress:state.surveyInfo.showProgress,
-      showQuestions:state.surveyInfo.showQuestions
+      showQuestions:state.surveyInfo.showQuestions,
+      surveyDetails:state.surveyDetails
     }
   }
 

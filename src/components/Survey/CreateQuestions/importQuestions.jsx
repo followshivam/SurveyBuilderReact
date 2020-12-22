@@ -7,6 +7,8 @@ import * as XLSX from'xlsx';
 import { Link } from 'react-router-dom';
 import { Table, Tag, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
+import axios from "axios";
+import {v4 as uuid} from "uuid"; 
 
 function ImportQuestions (props) {
 
@@ -20,10 +22,12 @@ function ImportQuestions (props) {
   var row=[];
   const [tableMap,setTableMap] = useState();
   var mapTemp ={};
-	var QuestionLimit=0;
+  var QuestionLimit=0;
+  
  function handleUpload(event) {
-   console.log(event.target.files[0]);
+   console.log(event.target.files[0].name);
     setFile(event.target.files[0]);
+    setFileName(event.target.files[0].name);
  }
 function setQuestionLimit(event){
 	const {name,value }= event.target;
@@ -57,8 +61,7 @@ function show() {
        
         data.push(object);
       }
-    
-      
+     
       setFile(data);
       console.log(keys);
       definetable(keys);
@@ -113,15 +116,18 @@ function sendData() {
   var quesData = [];
   var keys=Object.keys(file[0]);
   var prev=0;
-  
+  var pageId =uuid();
+
   for(let i=0;i<file.length;i++){
     var quesAnsObject = {};
-    var options = {};
+    var options = [];
     var values= Object.values(file[i]);
-    console.log(values);
+    
     quesAnsObject = {
-                question:values[parseInt(tableMap.QuestionLabel)],
-                type:values[parseInt(tableMap.AnswerType)]
+                "pageId" : pageId,
+                "quesId" : uuid(),
+                "question":values[parseInt(tableMap.QuestionLabel)],
+                "type":values[parseInt(tableMap.AnswerType)]
             }
     var tablemapKeys = Object.keys(tableMap);
     var tableMapValues = Object.values(tableMap);
@@ -130,12 +136,13 @@ function sendData() {
     if(quesAnsObject.type!=='long' ||quesAnsObject.type!=='short' ||quesAnsObject.type!=='date/time'){
     for( let k=0;k<tablemapKeys.length;k++){
         var optionValueScoreObject = {
+									                  lable : '',
                                     value : '',
                                     score : ''
                                 }
          if(tablemapKeys[k]!=='QuestionLabel' && tablemapKeys[k]!=='AnswerType'){
            optionValueScoreObject.value = String.fromCharCode(optionValue.charCodeAt(0)+optionValueIncrement);
-            console.log(i,k,values[parseInt(tableMapValues[k])]);
+            
             if(values[parseInt(tableMapValues[k])] && values[parseInt(tableMapValues[k])].trim()==="")
              break;
             else 
@@ -153,27 +160,31 @@ function sendData() {
               optionOfQuestion = optionOfQuestion.replaceAll('[', " ");
            if(optionOfQuestion && optionOfQuestion.includes( "]"))
               optionOfQuestion = optionOfQuestion.replaceAll(']', " ");
-           options[optionOfQuestion] = optionValueScoreObject;
+           optionValueScoreObject["lable"] = optionOfQuestion;
            optionValueIncrement++;
+		   options.push(optionValueScoreObject);
          } 
-         console.log(options);
+         
          quesAnsObject.options = options;                      
       } }
       quesData.push(quesAnsObject);
-      console.log(quesData);
+    
       if(i%QuestionLimit===QuestionLimit-1){
-        firebaseDb.child('pages').push(quesData.slice(prev,QuestionLimit+prev));
-        
-        prev=i+1;
+        pageId=uuid();
         }
        
+       axios.post("http://127.0.0.1:8080/survey/addQuestion", quesAnsObject)
+            .then(response => {
+			
+            })
+            .catch(error =>{
+                console.log(error);
+            } )
+            
+             
       }
-      if(quesData!==[]){
-        firebaseDb.child('pages').push(quesData.slice(prev,file.length));
-       
-      }
-      
-      
+      props.handleCheck2();
+      props.changeCounter();
 }
 
 function definetable(keys){

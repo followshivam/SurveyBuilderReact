@@ -96,6 +96,16 @@
     padding:0.5em 4em;
     border: 0.2px solid grey;
 }
+.questionNumbering {
+  width:24px;
+  line-height: 16px;
+  margin-right:0 px;
+  margin-left: 12px;
+  margin-top: 10px;
+  font-weight:bold;
+  font-size: 16px;
+  color: #3A3A3A 
+}
 
 /* import questions */
 
@@ -222,7 +232,7 @@
     margin-right: 3rem;
     }
   .cancel-button {
-    margin-bottom:1rem;
+    margin-bottom:1.5rem;
     padding:5px 11px;
     background:#ffffff;
     border: 1px solid #979797;
@@ -233,7 +243,7 @@
     outline:none;
   }
   .import-button {
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
     margin-left:8px;
     padding:5px 11px;
     background: #0072c6;
@@ -285,7 +295,13 @@
      .separator {
         margin : 24px 0;
      }
-    } 
+     .file-upload {
+      text-align:left !important;
+    }
+    .file-select {
+      width:100% !important;
+    }
+   } 
     
   .selectClass
   {

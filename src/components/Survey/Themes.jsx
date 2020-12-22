@@ -1,5 +1,8 @@
 import React,{useState, useEffect} from 'react';
 import "./Themes.css";
+// import '../components.css';
+import {addInfo} from "../../Actions/Listen";
+import {connect} from "react-redux";
 import firebaseDb from "../../firebase";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -18,14 +21,25 @@ import visual2 from "../../Images/visual2.png";
 import visual3 from "../../Images/visual3.png";
 import textColor from "../../Images/textColor.png";
 import backgroundColor from "../../Images/backgroundColor.png";
-import downloadTheme from "../../Images/downloadTheme.png";
-import uploadTheme from "../../Images/uploadTheme.png";
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+// import downloadTheme from "../../Images/downloadTheme.png";
+// import uploadTheme from "../../Images/uploadTheme.png";
+// import ToggleButton from '@material-ui/lab/ToggleButton';
+// import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import CheckIcon from '@material-ui/icons/Check';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SvgDownloadThemes from "../../iconComponents/DownloadThemes.tsx";
 import SvgUploadThemes from "../../iconComponents/UploadThemes.tsx";
+import SvgDot from "../../iconComponents/Dot.tsx";
+import SvgAnswer1 from "../../iconComponents/Answer1.tsx";
+import SvgAnswer2 from "../../iconComponents/Answer2.tsx";
+import SvgAnswer3 from "../../iconComponents/Answer3.tsx";
+import SvgAttachment from "../../iconComponents/Attachment.tsx";
+import SvgFilled from "../../iconComponents/Filled.tsx";
+import SvgFilledCheckbox from "../../iconComponents/FilledCheckbox.tsx";
+import SvgLinedCheckbox from "../../iconComponents/LinedCheckbox.tsx";
+import SvgTabs from "../../iconComponents/Tabs.tsx";
+
+
 
 const useStyles= makeStyles({
     labelStyle: {
@@ -64,52 +78,228 @@ const useStyles= makeStyles({
         fontSize:props => props.headingStyle.fontSize
     },
     root:{
-        margin:0,
-        padding:0,
-        display:"inline-block",
+        
     },
     colorRoot:{
         display:"absolute"
     }
 });    
+    
 
-function Themes() {
-    const [labelStyle,setLabelStyle]=useState({
-        fontSize:12,
-        color:"#3A3A3A",
-        textDecoration:"",
-        fontStyle:"",
-        fontWeight:600,
-        fontFamily:"Open Sans",
-        backgroundColor:"white"
+function Themes(prop) {
+    const [logoData,setLogoData]=useState();
+
+    useEffect(()=>{
+        console.log("in use effect 1");
+        firebaseDb.child("themes").on("value",snapshot=>{
+            if(snapshot.val()!=null)
+            setThemeData({
+                ...snapshot.val()
+            })
+            else{
+               firebaseDb.child("themes").set(
+                defaultTheme,
+            err=>{
+                if(err){
+                    console.log(err);
+                }
+            } )
+            }
+        })
+        firebaseDb.child("definitionData/logo/imageBlob").on("value",snapshot=>{
+            if(snapshot.val()!=null)
+            setLogoData({
+                ...snapshot.val()
+            })
+            console.log(snapshot.val());
+            
+            
+        })
+    }
+    ,[]);
+
+    useEffect(()=>{
+        
+        console.log("in use effect 2");
+        firebaseDb.child("allPages").on("value",snapshot=>{
+        setPageData({
+            ...snapshot.val()
+        })
+        })
+    },[]);
+
+    const [defaultTheme,setDefaultTheme]=useState({
+        default:{
+        labelStyle:{
+            fontSize:12,
+            color:"#3A3A3A",
+            textDecoration:"",
+            fontStyle:"",
+            fontWeight:600,
+            fontFamily:"Open Sans",
+            backgroundColor:"white"
+        },
+        inputStyle:{
+            fontSize:12,
+            color:"#3A3A3A",
+            textDecoration:"",
+            fontStyle:"",
+            fontWeight:300,
+            fontFamily:"Open Sans",
+            marginRight:"2em"
+        },
+        themeStyle:{
+            backgroundColor:"#FFFFFF",
+            margin:"1em 6em 2em",
+            padding:".5em 2em 2em",
+            overflow: "scroll"
+        },
+        checkboxStyle:{
+            height:30,
+            width:30
+        },
+        optionsDisplay:{
+            display:"block",
+        marginRight:"0em"
+        },
+        headingStyle:{
+            fontSize:11
+        }
+    }});
+
+    const [pageData,setPageData]= useState({});
+    const [count,setCount]=useState(1);
+    const [showLabelColor,setShowLabelColor]=useState(false);
+    const [showInputColor,setShowInputColor]=useState(false);
+    const [showBackgroundColor,setShowBackgroundColor]= useState(false);
+    const [showThemeColor,setShowThemeColor]=useState(false);
+    const [saveAsPopup,setSaveAsPopup]=useState(false);
+    const [newThemeInput,setNewThemeInput]=useState("");
+    const [inputVariant,setInputVariant]=useState("outlined-out");
+    const [singleDisplay, setSingleDisplay]=useState("dot");
+    const [multiDisplay, setMultiDisplay]=useState("");
+    const default1={
+        labelStyle:{
+            fontSize:12,
+            color:"#3A3A3A",
+            textDecoration:"",
+            fontStyle:"",
+            fontWeight:600,
+            fontFamily:"Open Sans",
+            backgroundColor:"white"
+        },
+        inputStyle:{
+            fontSize:12,
+            color:"#3A3A3A",
+            textDecoration:"",
+            fontStyle:"",
+            fontWeight:300,
+            fontFamily:"Open Sans",
+            marginRight:"2em"
+        },
+        themeStyle:{
+            backgroundColor:"#FFFFFF",
+            margin:"1em 6em 2em",
+            padding:".5em 2em 2em",
+            overflow: "scroll"
+        },
+        checkboxStyle:{
+            height:30,
+            width:30
+        },
+        optionsDisplay:{
+            display:"block",
+        marginRight:"0em"
+        },
+        headingStyle:{
+            fontSize:11
+        }
+    };
+    const [themeData,setThemeData]=useState({
+        "default":default1
     });
+    console.log({themeData});
+    
+    const [currentThemeId,setCurrentThemeId]=useState("default");
+
+    const [labelStyle,setLabelStyle]=useState({
+        fontSize:themeData[currentThemeId].labelStyle.fontSize,
+        color:themeData[currentThemeId].labelStyle.color,
+        textDecoration:themeData[currentThemeId].labelStyle.textDecoration,
+        fontStyle:themeData[currentThemeId].labelStyle.fontStyle,
+        fontWeight:themeData[currentThemeId].labelStyle.fontWeight,
+        fontFamily:themeData[currentThemeId].labelStyle.fontFamily,
+        backgroundColor:themeData[currentThemeId].labelStyle.backgroundColor,
+    });
+    // console.log({labelStyle});
+    // console.log({currentThemeId});
     const [inputStyle,setInputStyle]=useState({
-        fontSize:12,
-        color:"#3A3A3A",
-        textDecoration:"",
-        fontStyle:"",
-        fontWeight:300,
-        fontFamily:"Open Sans",
-        marginRight:"2em"
+        fontSize:themeData[currentThemeId].inputStyle.fontSize,
+        color:themeData[currentThemeId].inputStyle.color,
+        textDecoration:themeData[currentThemeId].inputStyle.color,
+        fontStyle:themeData[currentThemeId].inputStyle.fontStyle,
+        fontWeight:themeData[currentThemeId].inputStyle.fontWeight,
+        fontFamily:themeData[currentThemeId].inputStyle.fontFamily,
+        marginRight:themeData[currentThemeId].inputStyle.marginRight
     });
     const [themeStyle,setThemeStyle]=useState({
-        backgroundColor:"#FFFFFF",
-        margin:"1em 6em 2em",
-        padding:".5em 2em 2em",
-        overflow: "scroll"
+        backgroundColor:themeData[currentThemeId].themeStyle.backgroundColor,
+        margin:themeData[currentThemeId].themeStyle.margin,
+        padding:themeData[currentThemeId].themeStyle.padding,
+        overflow: themeData[currentThemeId].themeStyle.overflow
     });
     const [checkboxStyle,setCheckboxStyle]=useState({
-        height:30,
-        width:30
+        height:themeData[currentThemeId].checkboxStyle.height,
+        width:themeData[currentThemeId].checkboxStyle.width
     });
     const [optionsDisplay,setOptionsDisplay]=useState({
-        display:"block",
-        marginRight:"0em"
+        display:themeData[currentThemeId].optionsDisplay.display,
+        marginRight:themeData[currentThemeId].optionsDisplay.marginRight
     });
     const [headingStyle,setHeadingStyle]=useState({
-        fontSize:11
+        fontSize:themeData[currentThemeId].headingStyle.fontSize
     });
-
+    
+    useEffect(() => {
+        setLabelStyle((prev)=>{
+            return({ 
+                fontSize:themeData[currentThemeId].labelStyle.fontSize,
+                color:themeData[currentThemeId].labelStyle.color,
+                textDecoration:themeData[currentThemeId].labelStyle.color,
+                fontStyle:themeData[currentThemeId].labelStyle.fontStyle,
+                fontWeight:themeData[currentThemeId].labelStyle.fontWeight,
+                fontFamily:themeData[currentThemeId].labelStyle.fontFamily,
+                marginRight:themeData[currentThemeId].labelStyle.marginRight
+            })  
+            });
+            setInputStyle({
+                fontSize:themeData[currentThemeId].inputStyle.fontSize,
+        color:themeData[currentThemeId].inputStyle.color,
+        textDecoration:themeData[currentThemeId].inputStyle.color,
+        fontStyle:themeData[currentThemeId].inputStyle.fontStyle,
+        fontWeight:themeData[currentThemeId].inputStyle.fontWeight,
+        fontFamily:themeData[currentThemeId].inputStyle.fontFamily,
+        marginRight:themeData[currentThemeId].inputStyle.marginRight
+            });
+            setThemeStyle({
+                backgroundColor:themeData[currentThemeId].themeStyle.backgroundColor,
+        margin:themeData[currentThemeId].themeStyle.margin,
+        padding:themeData[currentThemeId].themeStyle.padding,
+        overflow: themeData[currentThemeId].themeStyle.overflow
+            });
+            setCheckboxStyle({
+                height:themeData[currentThemeId].checkboxStyle.height,
+        width:themeData[currentThemeId].checkboxStyle.width
+            });
+            setOptionsDisplay({
+                display:themeData[currentThemeId].optionsDisplay.display,
+        marginRight:themeData[currentThemeId].optionsDisplay.marginRight
+            });
+            setHeadingStyle({
+                fontSize:themeData[currentThemeId].headingStyle.fontSize
+            })
+    }, [themeData,currentThemeId])
+    
     // const [labelFont,setLabelFont]=useState(10);
     
     const props = {
@@ -123,7 +313,7 @@ function Themes() {
             backgroundColor:labelStyle.backgroundColor
         },
         inputStyle:{
-            fontSize: inputStyle.fontSize, 
+            fontSize: inputStyle.fontSize,
             color:inputStyle.color,
             textDecoration:inputStyle.textDecoration,
             fontStyle:inputStyle.fontStyle,
@@ -151,18 +341,6 @@ function Themes() {
     };
     
     const classes=useStyles(props);
-    const [pageData,setPageData]= useState({});
-    const [count,setCount]=useState(1);
-    const [showLabelColor,setShowLabelColor]=useState(false);
-    const [showInputColor,setShowInputColor]=useState(false);
-    const [showBackgroundColor,setShowBackgroundColor]= useState(false);
-    const [showThemeColor,setShowThemeColor]=useState(false);
-    const [inputVariant,setInputVariant]=useState("outlined-out");
-    const [singleDisplay, setSingleDisplay]=useState("dot");
-    const [multiDisplay, setMultiDisplay]=useState("");
-
-    const [themeData,setThemeData]=useState({});
-    const [currentThemeId,setCurrentThemeId]=useState();
 
     const [currentTheme,setCurrentTheme]=useState({
         labelStyle:{
@@ -201,72 +379,55 @@ function Themes() {
             fontSize:headingStyle.fontSize
         }
     });
-    
-    const [defaultTheme,setDefaultTheme]=useState({
-        labelStyle:{
-            fontSize:12,
-            color:"#3A3A3A",
-            textDecoration:"",
-            fontStyle:"",
-            fontWeight:600,
-            fontFamily:"Open Sans",
-            backgroundColor:"white"
-        },
-        inputStyle:{
-            fontSize:12,
-            color:"#3A3A3A",
-            textDecoration:"",
-            fontStyle:"",
-            fontWeight:300,
-            fontFamily:"Open Sans",
-            marginRight:"2em"
-        },
-        themeStyle:{
-            backgroundColor:"#FFFFFF",
-            margin:"1em 6em 2em",
-            padding:".5em 2em 2em",
-            overflow: "scroll"
-        },
-        checkboxStyle:{
-            height:30,
-            width:30
-        },
-        optionsDisplay:{
-            display:"block",
-        marginRight:"0em"
-        },
-        headingStyle:{
-            fontSize:11
-        }
-    });
-    
-    // const [optionsDisplay,setOptionsDisplay]=useState("vertical");
-    useEffect(()=>{
-        firebaseDb.child("themes").on("value",snapshot=>{
-            if(snapshot.val()!=null)
-            setThemeData({
-                ...snapshot.val()
-            })
-            else{
-               firebaseDb.child("themes").push(
-                {defaultTheme},
-            err=>{
-                if(err){
-                    console.log(err);
-                }
-            } )
+
+    useEffect(() => {
+        setCurrentTheme({
+            labelStyle:{
+                fontSize:labelStyle.fontSize,
+                color:labelStyle.color,
+                textDecoration:labelStyle.textDecoration,
+                fontStyle:labelStyle.fontStyle,
+                fontWeight:labelStyle.fontWeight,
+                fontFamily:labelStyle.fontFamily,
+                backgroundColor:labelStyle.backgroundColor 
+            },
+            inputStyle:{
+                fontSize:inputStyle.fontSize,
+                color:inputStyle.color,
+                textDecoration:inputStyle.textDecoration,
+                fontStyle:inputStyle.fontStyle,
+                fontWeight:inputStyle.fontWeight,
+                fontFamily:inputStyle.fontFamily,
+                marginRight:inputStyle.marginRight
+            },
+            themeStyle:{
+                backgroundColor:themeStyle.backgroundColor,
+                margin:themeStyle.margin,
+                padding:themeStyle.padding,
+                overflow:themeStyle.overflow
+            },
+            checkboxStyle:{
+                height:checkboxStyle.height,
+                width:checkboxStyle.width
+            },
+            optionsDisplay:{
+                display:optionsDisplay.display,
+            marginRight:optionsDisplay.marginRight
+            },
+            headingStyle:{
+                fontSize:headingStyle.fontSize
             }
         })
-    }
-    ,[]);
-
-    useEffect(()=>{
-        firebaseDb.child("pagis").on("value",snapshot=>{
-        setPageData({
-            ...snapshot.val()
-        })
-        })
-    },[]);
+    }, [labelStyle,inputStyle,themeStyle,checkboxStyle,optionsDisplay,headingStyle]);
+    
+    
+    console.log({themeData});
+    console.log(labelStyle.fontSize);
+    console.log(currentTheme.labelStyle.fontSize);
+    // console.log({currentTheme});
+    
+    // const [optionsDisplay,setOptionsDisplay]=useState("vertical");
+    
 
     // function handleLabelTextSize(event){
     //     // console.log(event.target.value);
@@ -418,17 +579,23 @@ function Themes() {
                 ...prev,backgroundColor:updatedColor.hex
             }
         });
-    }
-    function handleInputVariant(event,newValue){
+    };
+    function handleInputVariant(event){
+        const newValue=event.currentTarget.getAttribute("value");
+        console.log(event.currentTarget);
+        
         setInputVariant(newValue);
     };
-    function handleSingleDisplay(event,newValue){
+    function handleSingleDisplay(event){
+        const newValue=event.currentTarget.getAttribute("value");
         setSingleDisplay(newValue);
     };
-    function handleMultiDisplay(event,newValue){
+    function handleMultiDisplay(event){
+        const newValue=event.currentTarget.getAttribute("value");
         setMultiDisplay(newValue);
     };
-    function handleOptionsDisplay(event,newValue){
+    function handleOptionsDisplay(event){
+        const newValue=event.target.getAttribute("value");
         if(newValue==="horizontal"){
             setOptionsDisplay((prev) =>{
                 return{
@@ -479,17 +646,74 @@ function Themes() {
         })
     }
 
+    function SaveTheme(){
+        firebaseDb.child(`themes/${currentThemeId}`).set(
+            JSON.parse( JSON.stringify(currentTheme) ),
+            err=>{
+                if(err){
+                    console.log(err);
+                } else
+                {
+                    console.log("saved theme changes to firebase");
+                }
+            }
+        )
+    }
+
+    function handleSaveAsPopup(){
+        setSaveAsPopup(!saveAsPopup);
+    }
+
+    function addNewTheme(){
+        firebaseDb.child(`themes/${newThemeInput}`).set(
+            JSON.parse( JSON.stringify(currentTheme) ),
+            err=>{
+                if(err){
+                    console.log(err);
+                } else
+                {
+                    console.log("saved theme changes to firebase");
+                }
+            }
+        )
+        setSaveAsPopup(false);
+        setCurrentThemeId(newThemeInput);
+        setNewThemeInput("");
+    }
+    function handleNewThemeInput(event){
+        const {name,value}=event.target;
+        setNewThemeInput(value);
+    }
+    function handleCurrentThemeId(event){
+        setCurrentThemeId(event.target.value)
+        console.log(event.target.value);
+        
+    }
+    console.log(props);
+    
+
     return (
         <>
-        <div className="shade-main"> </div>
-        <div className="theme" >
+        <div className="shade-main"></div>
+        {saveAsPopup? <><div className="shade-main-saveAs"></div><div className="saveAsThemePopUp">
+        <p className="newTheme">New Theme Name:</p>
+        <input onChange={handleNewThemeInput} name="newTheme" value={newThemeInput} type="text"/>
+        <button className="createNew-btn" onClick={addNewTheme}> Create New</button>
+        <button className="cancel-btn" onClick={handleSaveAsPopup}> Cancel</button>
+        </div></> :null }
+        <div className="theme">
             <div className="theme-main">
                 <div className="theme-header1">
                     <p 
                     // style={{fontSize:parseInt(labelFont), color:"red"}}
                     > Theme: </p>
-                    <select name="" id="">
-                        <option value="">Default Theme</option>
+                    <select name="" onChange={handleCurrentThemeId} id="">
+                    {Object.keys(themeData).map((theme)=>{
+                        return(
+                            <option name={theme} key={theme} value={theme}> {theme} </option>
+                        )
+                        
+                    })}                        
                     </select>
                     <a> <SvgDownloadThemes/> Download Theme</a>
                     <a> <SvgUploadThemes/> Upload Theme </a>
@@ -498,11 +722,17 @@ function Themes() {
                 </div>
 
                 <div className="theme-questions" >
-                    <div className={classes.themeStyle} >
+                    <div className={`theme-questions-inner ${classes.themeStyle}`} >
                         <div className="theme-questions-header">
+                            {prop.logo &&<img src={prop.logo.imageObjectURL} alt="image"/>}
+                            {/* <img src={logoData} alt="image"/> */}
                             <p className={classes.headingStyle} >Employee Satisfaction Survey</p>
+                            
                             {/* 10% percent complete */}
                         </div>
+                        <p>Welcome Message</p>
+                        
+
                         {Object.keys(pageData).map((idd,counto)=>{
                             return(
                                 <div  key={idd}>
@@ -531,7 +761,7 @@ function Themes() {
 
                                                     :[ (pageData[idd])[id].type==="multi-select"
                                                     ? <label className={classes.inputStyle}  htmlFor={i}>
-                                                    <input type="checkbox" className={multiDisplay==="lined" ? "checkboxStyles": "" } style={{height:"1.4em", width:"1.4em" }} name={i} value={i} id={i} /> &nbsp;
+                                                    <input type="checkbox" className={multiDisplay==="lined" ? "checkboxStyles": "" } style={{height:"1.4em", width:"1.4em"}} name={i} value={i} id={i} /> &nbsp;
                                                     <span className="checkboxStyles-span"></span>
                                                     {(pageData[idd])[id].options[i].name}
                                                     </label>
@@ -575,16 +805,23 @@ function Themes() {
                 <div className="theme-header2">
                     <div className="theme-header2-sub1"> <p> Text Size</p> <a onClick={decreaseThemeSize}>-</a> <a onClick={increaseThemeSize}>+</a> </div> 
                     <div className="theme-header2-sub2"> <p>Theme Color</p> <label htmlFor="theme-color"></label>
-                    <a onClick={()=> setShowThemeColor(!showThemeColor)}> 
-                        {showThemeColor? <SketchPicker 
+                    
+                        {showThemeColor? <div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}>
+                        <a onClick={()=> setShowThemeColor(!showThemeColor)}> <img src={backgroundColor} alt=""/> 
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${themeStyle.backgroundColor}`}}></div> </a>
+                        {/* <div style={{height:".5em",width:"2em", backgroundColor:"red"}}></div> */}
+                        <div style={{position:"absolute",zIndex:"6", right:"2em",top:"3em"}}> <SketchPicker
                             color={themeStyle.backgroundColor}
-                            onChange={updatedColor=> handleThemeColor(updatedColor)}
-                        />
-                        : <img src={backgroundColor} alt=""/> } </a>
+                            onChange={updatedColor=> handleThemeColor(updatedColor)}/> </div> </div>
+                        :  <a onClick={()=> setShowThemeColor(!showThemeColor)}> <div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}>
+                        <img src={backgroundColor} alt=""/>
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${themeStyle.backgroundColor}`}}></div>
+                        </div> </a> } 
                     </div>
                 </div>
                 <div className="theme-body">
                     <p >Detailed Configuration</p>
+                    <div className="theme-style-main-outer">
                     <div className="theme-style-main">
                         <div className="theme-style-sub1" > <a href="">Form</a> <a href="">Questionnaire</a> </div>
                         <div className="theme-style-sub2" >
@@ -604,12 +841,20 @@ function Themes() {
                         </select>
                         <input type="number" min="8" max="20" placeholder="10" step="1" value={labelStyle.fontSize} name="fontSize" onChange={(event) => handleLabelTextStyle(event)} />
                         {/* <input type="color"/> */}
-                        <a onClick={()=> setShowLabelColor(!showLabelColor)}> 
-                        {showLabelColor? <SketchPicker
+                         
+                        {showLabelColor? <div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}><a onClick={()=> setShowLabelColor(!showLabelColor)}>
+                        <img src={textColor} alt=""/></a>
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${labelStyle.color}`}}></div> 
+                        {/* <div style={{height:".5em",width:"2em", backgroundColor:"red",position:"absolute",right:"9.5em"}}></div> */}
+                        <div style={{position:"absolute",zIndex:"6", right:"-3em",top:"12em"}}>
+                        <SketchPicker
                             color={labelStyle.color}
                             onChange={updatedColor=> handleLabelTextColor(updatedColor)}
-                        />
-                        : <img src={textColor} alt=""/> } </a>
+                        /></div></div>
+                        : <a onClick={()=> setShowLabelColor(!showLabelColor)}> <div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}><img src={textColor} alt=""/>
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${labelStyle.color}`}}></div>
+                        {/* <div style={{height:".5em",width:"2em", backgroundColor:"red",position:"absolute",right:"9.5em"}}></div> */}
+                        </div> </a> } <br/>
                         {/* <SketchPicker 
                             color={labelStyle.color}
                             onChange={updatedColor=> handleLabelTextColor(updatedColor)}
@@ -623,12 +868,19 @@ function Themes() {
                             <option value="underline">Underline</option>
                         </select>
                         <p>Background</p>
-                        <a onClick={()=> setShowBackgroundColor(!showBackgroundColor)}> 
-                        {showBackgroundColor? <SketchPicker 
+                        
+                        {showBackgroundColor? <div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}> <a onClick={()=> setShowBackgroundColor(!showBackgroundColor)}> 
+                        <img src={backgroundColor} alt=""/> </a>
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${labelStyle.backgroundColor}`}}></div>
+                        {/* <div style={{height:".5em",width:"2em", backgroundColor:"red"}}></div> */}
+                        <div style={{position:"absolute",zIndex:"6",right:"0em"}}> <SketchPicker
                             color={labelStyle.backgroundColor}
                             onChange={updatedColor=> handleBackgroundColor(updatedColor)}
-                        />
-                        : <img src={backgroundColor} alt=""/> } </a>
+                        /> </div> </div>
+                        : <a onClick={()=> setShowBackgroundColor(!showBackgroundColor)}> <div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}><img src={backgroundColor} alt=""/>
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${labelStyle.backgroundColor}`}}></div>
+                        {/* <div style={{height:".5em",width:"2em", backgroundColor:"red"}}></div> */}
+                        </div> </a> } <br/>
                         {/* <input type="color"/>     */}
                         </div>
 
@@ -645,12 +897,19 @@ function Themes() {
                             <option value="Montserrat">Montserrat</option>
                         </select>
                         <input type="number" min="8" max="20" placeholder="10" step="1" value={inputStyle.fontSize} name="fontSize" onChange={(event) => handleInputTextStyle(event)} />
-                        <a onClick={()=> setShowInputColor(!showInputColor)}> 
-                        {showInputColor? <SketchPicker 
+                        
+                        {showInputColor? <div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}>
+                        <a onClick={()=> setShowInputColor(!showInputColor)}><img src={textColor} alt=""/> </a>
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${inputStyle.color}`}}></div>
+                        {/* <div style={{height:".5em",width:"2em", backgroundColor:"red",position:"absolute",right:"9.5em"}}></div> */}
+                        <div style={{position:"absolute",zIndex:"6",right:"6em"}}> <SketchPicker
                             color={inputStyle.color}
                             onChange={updatedColor=> handleInputTextColor(updatedColor)}
-                        />
-                        : <img src={textColor} alt=""/> } </a>
+                        /> </div> </div>
+                        : <a onClick={()=> setShowInputColor(!showInputColor)}><div style={{height:"2.5em",width:"2em",display:"inline-flex", flexDirection:"column"}}><img src={textColor} alt=""/>
+                        <div style={{height:".5em",width:"2em", backgroundColor:`${inputStyle.color}`}}></div>
+                        {/* <div style={{height:".5em",width:"2em", backgroundColor:"red",position:"absolute",right:"9.5em"}}></div>  */}
+                        </div> </a> }<br/>
                         {/* <input type="color"/> */}
                         <select name="textStyle" id="textStyle" onChange={handleInputTextStyle} >
                             <option value="none">None</option>
@@ -667,101 +926,146 @@ function Themes() {
                         <p>
                         Multiple Choice(Single Select)
                         </p>
-                        <ToggleButtonGroup className={classes.root} value={singleDisplay} exclusive onChange={handleSingleDisplay} aria-label="singleDisplay" >
-                            <ToggleButton className={classes.root} value="dot" aria-label="dot">
-                                <img src={single1} value="single1" name="single"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="filled" aria-label="filled">
-                                <img src={single2} value="single2" name="single"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="toggle" aria-label="toggle">
-                                <img src={single3} value="single3" name="single"/>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        {/* multiDisplay singleDisplay multiDisplay optionsDisplay */}
+                        <div className="theme-boxes" value={singleDisplay} exclusive aria-label="singleDisplay" >
+                            <div className={singleDisplay==="dot" ? "shaded-boxes boxes" : "boxes"} onClick={handleSingleDisplay} value="dot" aria-label="dot">
+                                <SvgDot/> &nbsp; Dot 
+                            </div>
+                            <div className={singleDisplay==="filled" ? "shaded-boxes boxes" : "boxes"} onClick={handleSingleDisplay} value="filled" aria-label="filled">
+                                <SvgFilled/> &nbsp; Filled 
+                            </div>
+                            <div className={singleDisplay==="toggle" ? "shaded-boxes boxes" : "boxes"} onClick={handleSingleDisplay} value="toggle" aria-label="toggle">
+                                
+                                <SvgTabs/> &nbsp; Tabs
+                            </div>
+                        </div>
                         
                         <p>Multiple Choice(Multi Select)</p>
-                        <ToggleButtonGroup className={classes.root} value={multiDisplay} exclusive onChange={handleMultiDisplay} aria-label="multiDisplay" >
-                            <ToggleButton className={classes.root} value="lined" aria-label="lined">
-                                <img src={multi1} value="lined" name="lined"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="filled" aria-label="filled">
-                                <img src={multi2} value="filled" name="filled"/>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        <div className="theme-boxes" value={multiDisplay} exclusive  aria-label="multiDisplay" >
+                            <div className={multiDisplay==="lined" ? "shaded-boxes boxes" : "boxes"} onClick={handleMultiDisplay} value="lined" aria-label="lined">
+                                <SvgLinedCheckbox/> &nbsp; Lined 
+                            </div>
+                            <div className={multiDisplay==="filled" ? "shaded-boxes boxes" : "boxes"} onClick={handleMultiDisplay} value="filled" aria-label="filled">
+                                 <SvgFilledCheckbox/> &nbsp; Filled 
+                            </div>
+                        </div>
                         
                         <p>Multiple Choice Display Type</p>
-                        <ToggleButtonGroup className={classes.root} value={optionsDisplay} exclusive onChange={handleOptionsDisplay} aria-label="displayDirection">
-                            <ToggleButton className={classes.root} value="vertical" aria-label="vertical">
-                                <img src={vertical} value="vertical" name="displayDirection"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="horizontal" aria-label="horizontal">
-                                <img src={horizontal} value="horizontal" name="displayDirection"/>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        <div className="theme-boxes" value={optionsDisplay} aria-label="displayDirection">
+                            <div className={optionsDisplay.display==="block" ? "shaded-boxes boxes" : "boxes"} onClick={handleOptionsDisplay} value="vertical" aria-label="vertical">
+                                {/* <img src={vertical} value="vertical" name="displayDirection"/> */}
+                                Vertical
+                            </div>
+                            <div className={optionsDisplay.display==="inline" ? "shaded-boxes boxes" : "boxes"} onClick={handleOptionsDisplay} value="horizontal" aria-label="horizontal">
+                                {/* <img src={horizontal} value="horizontal" name="displayDirection"/> */}
+                                Horizontal
+                            </div>
+                        </div>
                         
                         
                         <p>Short Answer</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
-                                <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
-                                <img alt="displayType" src={visual2} value="standard" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
-                                <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        <div className="theme-boxes" value={inputVariant} aria-label="displayType" >
+                            <div className={inputVariant==="outlined-out" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-out" aria-label="outlined-out">
+                                {/* <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/> */}
+                                <SvgAnswer1/>
+                            </div>
+                            <div className={inputVariant==="standard" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="standard" aria-label="standard">
+                                {/* <img alt="displayType" src={visual2} value="standard" name="displayType"/> */}
+                                <SvgAnswer2/>
+                            </div>
+                            <div className={inputVariant==="outlined-in" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-in" aria-label="right aligned">
+                                {/* <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/> */}
+                                <SvgAnswer3/> 
+                            </div>
+                        </div>
                         <p>Long Answer</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
-                                <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
-                                <img alt="displayType" src={visual2} value="standard" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
-                                <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        <div className="theme-boxes" value={inputVariant}  aria-label="displayType" >
+                            <div className={inputVariant==="outlined-out" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-out" aria-label="outlined-out">
+                                {/* <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/> */}
+                                <SvgAnswer1/>
+                            </div>
+                            <div className={inputVariant==="standard" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="standard" aria-label="standard">
+                                {/* <img alt="displayType" src={visual2} value="standard" name="displayType"/> */}
+                                <SvgAnswer2/>
+                            </div>
+                            <div className={inputVariant==="outlined-in" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-in" aria-label="right aligned">
+                                {/* <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/> */}
+                                <SvgAnswer3/>
+                            </div>
+                        </div>
                         <p>Dropdown</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType" >
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
-                                <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
-                                <img alt="displayType" src={visual2} value="standard" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
-                                <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        <div className="theme-boxes" value={inputVariant} aria-label="displayType" >
+                            <div className={inputVariant==="outlined-out" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-out" aria-label="outlined-out">
+                                {/* <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/> */}
+                                <SvgAnswer1/>
+                            </div>
+                            <div className={inputVariant==="standard" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="standard" aria-label="standard">
+                                {/* <img alt="displayType" src={visual2} value="standard" name="displayType"/> */}
+                                <SvgAnswer2/>
+                            </div>
+                            <div className={inputVariant==="outlined-in" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-in" aria-label="right aligned">
+                                {/* <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/> */}
+                                <SvgAnswer3/>
+                            </div>
+                        </div>
                         <p>Datepicker</p>
-                        <ToggleButtonGroup className={classes.root} value={inputVariant} exclusive onChange={handleInputVariant} aria-label="displayType">
-                            <ToggleButton className={classes.root} value="outlined-out" aria-label="outlined-out">
-                                <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="standard" aria-label="standard">
-                                <img alt="displayType"  src={visual2} value="standard" name="displayType"/>
-                            </ToggleButton>
-                            <ToggleButton className={classes.root} value="outlined-in" aria-label="right aligned">
-                                <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/>
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        <div className="theme-boxes" value={inputVariant} aria-label="displayType">
+                            <div className={inputVariant==="outlined-out" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-out" aria-label="outlined-out">
+                                {/* <img alt="displayType" src={visual1} value="outlined-out" name="displayType"/> */}
+                                <SvgAnswer1/>
+                            </div>
+                            <div className={inputVariant==="standard" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="standard" aria-label="standard">
+                                {/* <img alt="displayType"  src={visual2} value="standard" name="displayType"/> */}
+                                <SvgAnswer2/>
+                            </div>
+                            <div className={inputVariant==="outlined-in" ? "shaded-boxes boxes" : "boxes"} onClick={handleInputVariant} value="outlined-in" aria-label="right aligned">
+                                {/* <img alt="displayType" src={visual3} value="outlined-in" name="displayType"/> */}
+                                <SvgAnswer3/>
+                            </div>
+                        </div>
                         </div>    
                         </div>
+                        
+
                     </div>
                     <div className="button-group">
-                            <button className="apply">Apply</button>
-                            <button className="save">Save</button>
-                            <button className="save-as">Save As</button>
-                    </div>        
+                            {/* <button style={{background: "#0072C6", border:"none", color: "#FFFFFF" ,fontWeight:"100", fontSize:"12px", padding:".5em 1em"}} className="apply">Apply</button> */}
+                            <div> <button style={{background: "#0072C6", border:"none", color: "#FFFFFF" ,fontWeight:"100", fontSize:"12px", padding:".5em 1em" }} 
+                            onClick={SaveTheme} className="save">Save Changes</button>
+                             </div>
+                            <div><button onClick={handleSaveAsPopup} className="save-as"
+                            style={{background: "#0072C6", border:"none", color: "#FFFFFF" ,fontWeight:"100", fontSize:"12px", padding:".5em 1em"}} >Save As</button>
+                            </div> 
+                        </div>
+                    </div>
+                            
                 </div>
             </div>
+            
         </div>
         </>
         
     )
 }
 
-export default Themes;
+function mapStateToProps(state){
+    return{
+      title:state.surveyInfo.title,
+      description:state.surveyInfo.description,
+      project:state.surveyInfo.project,
+      duration:state.surveyInfo.duration,
+      logo:state.surveyInfo.logo,
+      display:state.surveyInfo.display,
+      showProgress:state.surveyInfo.showProgress,
+      showQuestions:state.surveyInfo.showQuestions
+    }
+  }
+  
+  function matDispatchToProps(dispatch){
+    return{
+      changeData:(data)=>{dispatch(addInfo(data))}
+    }
+  }
+  
+  export default connect(mapStateToProps,matDispatchToProps)(Themes);
+// export default Themes;

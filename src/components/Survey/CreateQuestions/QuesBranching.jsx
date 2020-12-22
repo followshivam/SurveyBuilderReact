@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import "./QuesBranching.css";
-
+import firebaseDb from "../../../firebase";
 
 function QuesBranching(props) {
 
@@ -121,6 +121,22 @@ function QuesBranching(props) {
         forQuestionArray.splice(forQuestionCount, 1);
         // console.log({logicArray});
         setForQuestion(forQuestionArray);
+    }
+    function savetofirbase(){
+        firebaseDb.child("logic").set(
+                logic,
+            err=>{
+                if(err){
+                    console.log(err);
+                }
+            } )
+            firebaseDb.child("forQuestion").set(
+                forQuestion,
+            err=>{
+                if(err){
+                    console.log(err);
+                }
+            } )
     }
     // console.log(branchQuestion);
     console.log({forQuestion});    
@@ -244,7 +260,7 @@ function QuesBranching(props) {
             </div>
             <div className="saveCancelBtn">
                 <button onClick={props.handleQuesBranchingCheck} className="cancel-button"> Cancel </button>
-                <button  className="save-button">Save</button>
+                <button onClick={savetofirbase} className="save-button">Save</button>
             </div>
         </div>
         </>

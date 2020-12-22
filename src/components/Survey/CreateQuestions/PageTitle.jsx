@@ -22,6 +22,8 @@ import ImportQuestions from "./importQuestions";
 import Confirm from "./Confirm";
 import "./Confirm.css";
 import QuesBranching from "./QuesBranching";
+import axios from "axios";
+
 
 
 function PageTitle(props) {
@@ -35,7 +37,7 @@ function PageTitle(props) {
     const [checked,setChecked]=useState(false);
     const [quesBranchingChecked,setQuesBranchingChecked]=useState(false);
     const [selectedId,setSelectedId] =useState("");
-    const [selectedIdd,setSelectedIdd] =useState("");
+    const [selectedIdd,setSelectedIdd] =useState("1");
     const [pageName,setPageName]=useState("");
     const [pageCount,setPageCount]=useState(0);
     const [pageData,setPageData]=useState({});
@@ -66,13 +68,13 @@ function PageTitle(props) {
     // ,[]);
 
     useEffect(()=>{
-        firebaseDb.child("pagis").on("value",snapshot=>{
+        firebaseDb.child("allPages").on("value",snapshot=>{
             if(snapshot.val()!=null)
             setPageData({
                 ...snapshot.val()
             })
             else{
-               firebaseDb.child("pagis").push(
+               firebaseDb.child("allPages").push(
                 {},
             err=>{
                 if(err){
@@ -127,7 +129,7 @@ function PageTitle(props) {
             }
         ]);
         if(selectedId===""){
-        firebaseDb.child(`pagis/${selectedIdd}`).push(
+        firebaseDb.child(`allPages/${selectedIdd}`).push(
             data,
             err=>{
                 if(err){
@@ -139,7 +141,7 @@ function PageTitle(props) {
             }
         )} else
         {
-            firebaseDb.child(`pagis/${selectedIdd}/${selectedId}`).set(
+            firebaseDb.child(`allPages/${selectedIdd}/${selectedId}`).set(
                 data,
                 err=>{
                     if(err){
@@ -169,16 +171,23 @@ function PageTitle(props) {
     function handleEdit2(idd){
         setSelectedIdd(idd);
         console.log("idd is "+idd);
-        
     }
 
     function handleDelete(idd,id){
+        axios.post("http://127.0.0.1:8080/survey/deleteQuestion/69.881")
+        .then(response => {
+         console.log(response)
+         })
+         .catch(error =>{
+            console.log(error);
+           } )
+
         console.log("delete called");
         console.log(idd);
         console.log(id);
 
         // if(window.confirm("Are you sure you want to delete this question?")){
-        //     firebaseDb.child(`pagis/${idd}/${id}`).remove(
+        //     firebaseDb.child(`allPages/${idd}/${id}`).remove(
         //         err=>{
         //             if(err){
         //                 console.log(err);
@@ -193,7 +202,7 @@ function PageTitle(props) {
         // <Confirm  setConfirmDelete={setConfirmDelete} ask="Are you sure you want to delete this question?" />
 
             // if(confirmDelete){
-            firebaseDb.child(`pagis/${idd}/${id}`).remove(
+            firebaseDb.child(`allPages/${idd}/${id}`).remove(
                 err=>{
                     if(err){
                         console.log(err);
@@ -206,8 +215,25 @@ function PageTitle(props) {
         // }
     }
 
-    function addNewPage(){
-        firebaseDb.child("pagis").push(
+    function addNewPage(e){
+        // e.preventDefault();
+
+        // var num=Math.random(num)*1000;
+        // num=Math.ceil(num);
+
+        // var pageData={
+        //     "pageId": num
+        //     }
+
+        //  axios.post("http://127.0.0.1:8080/survey/addPage", pageData)
+        //  .then(response => {
+        //   console.log(response)
+        //   })
+        //   .catch(error =>{
+        //      console.log(error);
+        //     } )
+
+        firebaseDb.child("allPages").push(
                 initialPage,
             err=>{
                 if(err){
@@ -217,11 +243,19 @@ function PageTitle(props) {
     }
     function handlePageDelete(idd,event){
         // event.preventDefault();
+        // axios.post("http://127.0.0.1:8080/survey/deletePage/45")
+        //  .then(response => {
+        //   console.log(response)
+        //   })
+        //   .catch(error =>{
+        //      console.log(error);
+        //     } )
+            
         console.log("page delete called");
         console.log(idd);
                 
         // if(window.confirm("Are you sure you want to delete this page?")){
-            firebaseDb.child(`pagis/${idd}`).remove(
+            firebaseDb.child(`allPages/${idd}`).remove(
                 err=>{
                     if(err){
                         console.log(err);
@@ -239,13 +273,13 @@ function PageTitle(props) {
         console.log("page copy called");
         console.log(idd);
         var dataTocopy={};
-        firebaseDb.child(`pagis/${idd}`).on("value",snapshot=>{
+        firebaseDb.child(`allPages/${idd}`).on("value",snapshot=>{
             dataTocopy=snapshot.val();
         });
         console.log("data received to copy is: "+ dataTocopy);
         
 
-            firebaseDb.child("pagis").push(
+            firebaseDb.child("allPages").push(
                 dataTocopy,
                 err=>{
                     if(err){
@@ -260,13 +294,13 @@ function PageTitle(props) {
         console.log("Question copy called");
         console.log(idd);
         var quesToCopy={};
-        firebaseDb.child(`pagis/${idd}/${id}`).on("value",snapshot=>{
+        firebaseDb.child(`allPages/${idd}/${id}`).on("value",snapshot=>{
             quesToCopy=snapshot.val();
         });
         console.log("question received to copy is: "+ quesToCopy);
         
 
-            firebaseDb.child(`pagis/${idd}`).push(
+            firebaseDb.child(`allPages/${idd}`).push(
                 quesToCopy,
                 err=>{
                     if(err){

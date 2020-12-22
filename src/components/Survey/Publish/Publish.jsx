@@ -16,8 +16,12 @@ function Publish() {
       setShowPreview(!showPreview);
     }
 
+    function openPreviewInNewTab(){
+      window.open('http://localhost:3000/preview','Data','height=1200,width=900,left=450');
+    }
+
     function changeHandlertoFalse(){
-    setShow(false);
+      setShow(false);
     }
 
     if(show)
@@ -34,12 +38,9 @@ function Publish() {
           <option value="Select">Select</option>
           </select><br/>
           <button onClick={changeHandler}   className="Cont3">Execute</button>
-          <button onClick={(handleShowPreview)}   className="Cont3">Preview</button>
+          <button onClick={(openPreviewInNewTab)}   className="Cont3">Preview</button>
         </div>
-        {showPreview
-
-        ? <> <Preview/> <i onClick={handleShowPreview} className="fas fa-times" id="cancel-icon-preview"></i> </>
-        : null}
+        {/* {showPreview ? <> <Preview/> <i onClick={handleShowPreview} className="fas fa-times" id="cancel-icon-preview"></i> </>: null} */}
         </>
     )
 }

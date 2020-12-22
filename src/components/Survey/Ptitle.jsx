@@ -326,13 +326,13 @@ function createCheckHandler()
 
 
     useEffect(()=>{
-        firebaseDb.child("pagis").on("value",snapshot=>{
+        firebaseDb.child("allPages").on("value",snapshot=>{
             if(snapshot.val()!=null)
             setPageData({
                 ...snapshot.val()
             })
             else{
-               firebaseDb.child("pagis").push(
+               firebaseDb.child("allPages").push(
                 {},
             err=>{
                 if(err){

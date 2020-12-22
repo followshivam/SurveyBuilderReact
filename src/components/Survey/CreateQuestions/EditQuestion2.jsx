@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Deleteg from "../../../iconComponents/Deleteg.tsx";
 import Edit from "../../../iconComponents/Edit.tsx";
 import { uuid } from 'uuidv4';
+import axios from "axios";
+
 
 
 function EditQuestion2(props) {
@@ -262,6 +264,71 @@ function handleScoring(){
 
     function handleSave(event){
         event.preventDefault();
+    //     var quesBean;
+    //     var nwaray=[];
+
+    //     Object.keys(options).map(id=>{
+    //         console.log(id + " " +options[id].value+ " "+options[id].score);
+    //         nwaray.push({"lable":id,"value":options[id].value,"score":options[id].score});
+    //     })
+
+    //     console.log("bhavyabhavya");
+    //     console.log(quesData);
+    //     console.log("bhavyabhavya");
+
+    //     if(props.selectedId!=="")
+    //     {
+    //         console.log("ififif");
+    //         quesBean={
+    //             pageId: 987,
+    //             quesId:960,
+    //             question:quesData.question,
+    //             isMandatory:quesData.isMandatory,
+    //             type:quesData.type,
+    //             scoring:quesData.scoring,
+    //             options:nwaray
+    //          }
+
+    //          console.log(quesBean);
+            
+    //             axios.post("http://127.0.0.1:8080/survey/updateQuestion", quesBean)
+    //             .then(response => {
+    //                 console.log("yesyes")
+    //                 console.log(response)
+    //             })
+    //             .catch(error =>{
+    //                 console.log(error);
+    //             } )
+    
+    //     }else{
+
+    //         console.log("elseelse");
+
+    // var QuestionId=Math.random();
+    // QuestionId=Math.ceil(QuestionId*1000);
+    
+    // var number=349;
+
+    // quesBean={
+    //     pageId: number,
+    //     quesId:QuestionId,
+    //     question:quesData.question,
+    //     isMandatory:quesData.isMandatory,
+    //     type:quesData.type,
+    //     scoring:quesData.scoring,
+    //     options:nwaray
+    //  }
+
+    //     axios.post("http://127.0.0.1:8080/survey/addQuestion", quesBean)
+    //     .then(response => {
+    //         console.log(response)
+    //     })
+    //     .catch(error =>{
+    //         console.log(error);
+    //     } )
+        
+    // }
+    
         var quesRegex = /^[0-9a-zA-Z%\.]+[0-9a-zA-Z\\s?\.]*/;
         var ques = quesData.question.trim();
         console.log(quesData.type===''?'hi':'hello');
@@ -385,7 +452,7 @@ function handleScoring(){
 
             <table className="optionsTable">
                 <thead>
-                    <tr  >
+                    <tr>
                         <th style={{width:"48.5%"}} className="optionsTH" >Option</th>
                         <th style={{width:"28%"}} className="optionsTH" >Value</th>
                         {scoring? 
@@ -398,7 +465,7 @@ function handleScoring(){
                     <tr key={id}>
                         <td className="optionsTD" style={{fontWeight:"lighter"}} > {options[id].name}</td>
                         <td className="optionsTD" style={{fontWeight:"lighter"}}> {options[id].value}</td>
-                        {scoring?
+                        {scoring || options[id].score?
                         <td className="optionsTD" style={{fontWeight:"lighter"}}> {options[id].score}</td> :null}
                         <div className="optionsTD" style={{}} onClick={() => handleOptionEdit(id)} > <Edit /></div>
                         <div className="optionsTD" style={{}} onClick={() => handleOptionDelete(id)} > <Deleteg /></div>
